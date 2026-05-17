@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_routes.dart';
 import '../../../../../core/utils/navigation_service.dart';
 import '../widgets/movies_grid_tab.dart';
 import '../widgets/profile_tab_bar.dart';
 import '../widgets/profile_header_section.dart';
 import '../widgets/profile_action_buttons_section.dart';
-import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -46,15 +46,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // ── Action Buttons ───────────────────────────────────────────────
             ProfileActionButtonsSection(
               onEditProfile: () async {
-                final result =
-                    await NavigationService.pushWidget<Map<String, String>>(
-                      context,
-                      EditProfileScreen(
-                        initialName: _name,
-                        initialAvatar: _avatarPath,
-                      ),
-                    );
-                if (result != null && mounted) {
+                final result = await NavigationService.navigateTo(
+                  context,
+                  AppRoutes.editProfile,
+                  arguments: {
+                    'name': _name,
+                    'avatar': _avatarPath,
+                  },
+                );
+                
+                if (result != null && result is Map<String, String> && mounted) {
                   setState(() {
                     _name = result['name'] ?? _name;
                     _avatarPath = result['avatar'] ?? _avatarPath;

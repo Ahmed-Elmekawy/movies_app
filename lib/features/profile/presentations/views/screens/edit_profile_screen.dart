@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/navigation_service.dart';
 import '../../../../../core/widgets/custom_warning_dialog.dart';
@@ -9,16 +10,7 @@ import '../widgets/edit_profile_form_section.dart';
 import '../widgets/edit_profile_actions_section.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  final String initialName;
-  final String initialAvatar;
-  final String initialPhone;
-
-  const EditProfileScreen({
-    super.key,
-    required this.initialName,
-    required this.initialAvatar,
-    this.initialPhone = '01200000000',
-  });
+  const EditProfileScreen({super.key});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -29,13 +21,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _phoneController;
   late String _selectedAvatar;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.initialName);
-    _phoneController = TextEditingController(text: widget.initialPhone);
-    _selectedAvatar = widget.initialAvatar;
+    _nameController = TextEditingController();
+    _phoneController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+      _nameController.text = args?['name'] ?? '';
+      _phoneController.text = args?['phone'] ?? '01200000000';
+      _selectedAvatar = args?['avatar'] ?? AppImages.avatar1;
+      _isInitialized = true;
+    }
   }
 
   @override

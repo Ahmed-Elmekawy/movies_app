@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/config/theme/app_theme.dart';
-import 'features/profile/presentations/views/screens/profile_screen.dart';
+import 'core/utils/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         title: 'Movies App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        home: const ProfileScreen(),
+        initialRoute: AppRoutes.profile,
+        routes: AppRoutes.routes,
       ),
     );
   }

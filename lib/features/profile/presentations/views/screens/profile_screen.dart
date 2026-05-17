@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/utils/app_assets.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/navigation_service.dart';
+import '../widgets/movies_grid_tab.dart';
+import '../widgets/profile_tab_bar.dart';
+import '../widgets/profile_header_section.dart';
+import '../widgets/profile_action_buttons_section.dart';
+import 'edit_profile_screen.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  // ── Mock profile data ──────────────────────────────────────────────────────
+  String _name = 'John Safwat';
+  String _avatarPath = AppImages.avatar1;
+  int _selectedTab = 0;
+
+  // Simulate: Watch List = 12 items, History = 10 items
+  final int _watchListCount = 12;
+  final int _historyCount = 10;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.primaryVariant,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // ── Header ──────────────────────────────────────────────────────
+            ProfileHeaderSection(
+              avatarPath: _avatarPath,
+              name: _name,
+              watchListCount: _watchListCount,
+              historyCount: _historyCount,
+            ),
+
+            20.verticalSpace,
+
+            // ── Action Buttons ───────────────────────────────────────────────
+            ProfileActionButtonsSection(
+              onEditProfile: () async {
+                final result =
+                    await NavigationService.pushWidget<Map<String, String>>(
+                      context,
+                      EditProfileScreen(
+                        initialName: _name,
+                        initialAvatar: _avatarPath,
+                      ),
+                    );
+                if (result != null && mounted) {
+                  setState(() {
+                    _name = result['name'] ?? _name;
+                    _avatarPath = result['avatar'] ?? _avatarPath;
+                  });
+                }
+              },
+              onExit: () {
+                // TODO: sign out
+              },
+            ),
+
+            20.verticalSpace,
+
+            // ── Tab Bar ──────────────────────────────────────────────────────
+            Padding(
+              padding: REdgeInsets.symmetric(horizontal: 20),
+              child: ProfileTabBar(
+                selectedIndex: _selectedTab,
+                onTabChanged: (i) => setState(() => _selectedTab = i),
+              ),
+            ),
+
+            // Divider
+            Container(
+              height: 1,
+              color: AppColors.white.withValues(alpha: 0.08),
+            ),
+
+            // ── Tab Content ──────────────────────────────────────────────────
+            Expanded(
+              child: _selectedTab == 0
+                  ? const MoviesGridTab(
+                      isEmpty: true,
+                    ) // Watch List – empty state
+                  : const MoviesGridTab(
+                      isEmpty: false,
+                    ), // History – with mock movies
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

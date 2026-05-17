@@ -25,18 +25,20 @@ class CustomWarningDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveActionColor = actionColor ?? AppColors.red;
+    final theme = Theme.of(context);
+    final effectiveActionColor = actionColor ?? theme.colorScheme.error;
 
     return Dialog(
-      backgroundColor: AppColors.white,
+      backgroundColor: theme.colorScheme.surface,
       surfaceTintColor: Colors.transparent,
-      insetPadding: REdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+      insetPadding: REdgeInsets.symmetric(horizontal: 32),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       child: Padding(
-        padding: REdgeInsets.all(24),
+        padding: REdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Warning Icon
             Container(
               padding: REdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -46,40 +48,55 @@ class CustomWarningDialog extends StatelessWidget {
               child: Icon(
                 icon ?? Icons.warning_amber_rounded,
                 color: effectiveActionColor,
-                size: 40.sp,
+                size: 48.sp,
               ),
             ),
-            20.verticalSpace,
-            Text(title, textAlign: TextAlign.center),
+            24.verticalSpace,
+            // Title
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             12.verticalSpace,
-            Flexible(
-              child: SingleChildScrollView(
-                child: Text(description, textAlign: TextAlign.center),
+            // Description
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.white.withValues(alpha: 0.7),
               ),
             ),
             32.verticalSpace,
+            // Actions
             Row(
               children: [
+                // Cancel Button
                 Expanded(
-                  child: OutlinedButton(
+                  child: TextButton(
                     onPressed: () => NavigationService.goBack(context),
-                    style: OutlinedButton.styleFrom(
-                      padding: REdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: 8,
-                      ),
-                      side: const BorderSide(color: AppColors.primary),
+                    style: TextButton.styleFrom(
+                      padding: REdgeInsets.symmetric(vertical: 14),
+                      foregroundColor: AppColors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
+                        side: BorderSide(
+                          color: AppColors.white.withValues(alpha: 0.2),
+                        ),
                       ),
                     ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(cancelText),
+                    child: Text(
+                      cancelText,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
                 16.horizontalSpace,
+                // Action Button
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
@@ -89,19 +106,18 @@ class CustomWarningDialog extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: effectiveActionColor,
                       foregroundColor: AppColors.white,
-                      padding: REdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: 8,
-                      ),
+                      padding: REdgeInsets.symmetric(vertical: 14),
                       elevation: 0,
-                      minimumSize: Size.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(actionText),
+                    child: Text(
+                      actionText,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.white,
+                      ),
                     ),
                   ),
                 ),

@@ -15,6 +15,7 @@ class ProfileActionButtonsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =  Theme.of(context).colorScheme;
     return Padding(
       padding: REdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -25,8 +26,8 @@ class ProfileActionButtonsSection extends StatelessWidget {
               height: 46.h,
               txtButton: 'Edit Profile',
               onPressed: onEditProfile,
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.primaryVariant,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
             ),
           ),
           12.horizontalSpace,
@@ -37,7 +38,7 @@ class ProfileActionButtonsSection extends StatelessWidget {
               txtButton: 'Exit',
               icon: Icons.logout,
               onPressed: onExit,
-              backgroundColor: AppColors.red,
+              backgroundColor: colorScheme.error,
               foregroundColor: AppColors.white,
             ),
           ),

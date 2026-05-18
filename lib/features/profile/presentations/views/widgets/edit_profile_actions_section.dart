@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/app_colors.dart';
+import 'package:movies_app/core/utils/app_colors.dart';
 import '../../../../../core/widgets/custom_button.dart';
 
 class EditProfileActionsSection extends StatelessWidget {
@@ -15,6 +15,8 @@ class EditProfileActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: REdgeInsets.fromLTRB(20, 12, 20, 24),
       child: Column(
@@ -25,7 +27,7 @@ class EditProfileActionsSection extends StatelessWidget {
             child: CustomButton(
               txtButton: 'Delete Account',
               onPressed: onDelete,
-              backgroundColor: AppColors.red,
+              backgroundColor: colorScheme.error,
               foregroundColor: AppColors.white,
             ),
           ),
@@ -36,8 +38,8 @@ class EditProfileActionsSection extends StatelessWidget {
             child: CustomButton(
               txtButton: 'Update Data',
               onPressed: onUpdate,
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.primaryVariant,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
             ),
           ),
         ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_assets.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/navigation_service.dart';
 import '../../../../../core/widgets/custom_warning_dialog.dart';
 import '../widgets/avatar_picker_bottom_sheet.dart';
@@ -79,7 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       description:
           'Are you sure you want to permanently delete your account?\nThis action cannot be undone.',
       actionText: 'Delete',
-      actionColor: AppColors.red,
+      actionColor: Theme.of(context).colorScheme.error,
       icon: Icons.delete_forever_rounded,
       onActionPressed: () {},
     );
@@ -87,44 +86,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.primaryVariant,
       appBar: AppBar(
-        backgroundColor: AppColors.primaryVariant,
-        elevation: 0,
         leading: IconButton(
           onPressed: () => NavigationService.goBack(context),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: AppColors.primary,
+            color: colorScheme.primary,
           ),
         ),
         title: Text(
-          'Pick Avatar',
-          style: TextStyle(
-            color: AppColors.primary,
+          'Edit Profile',
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: colorScheme.primary,
             fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
           ),
         ),
-        centerTitle: true,
       ),
       body: SafeArea(
         child: Column(
           children: [
-            // ── Scrollable Form ────────────────────────────────────────────
             Expanded(
               child: SingleChildScrollView(
                 padding: REdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     40.verticalSpace,
-                    // ── Avatar ───────────────────────────────────────────
                     EditProfileAvatarSection(
                       avatarPath: _selectedAvatar,
                       onTap: _pickAvatar,
                     ),
-                    // ── Form ─────────────────────────────────────────────
                     EditProfileFormSection(
                       formKey: _formKey,
                       nameController: _nameController,
@@ -134,8 +128,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-
-            // ── Bottom Buttons ─────────────────────────────────────────────
             EditProfileActionsSection(
               onDelete: _onDeleteAccount,
               onUpdate: _onUpdate,

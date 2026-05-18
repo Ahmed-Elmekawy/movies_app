@@ -4,6 +4,15 @@ abstract class AppImages {
   static const String movie = 'assets/images/movie.png';
   static const String brandingImage = 'assets/images/branding_image.png';
 
+  // Movie Screenshots
+  static const String screenshot1 = 'assets/images/large-screenshot1.png';
+  static const String screenshot2 = 'assets/images/large-screenshot2.png';
+  static const String screenshot3 = 'assets/images/large-screenshot3.png';
+
+  // Movie related
+  static const String poster = 'assets/images/poster.png';
+  static const String actor = 'assets/images/actor.png';
+
   // Avatars
   static const String avatar1 = 'assets/images/avatar_1.png';
   static const String avatar2 = 'assets/images/avatar_2.png';

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         title: 'Movies App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        initialRoute: AppRoutes.profile,
+        initialRoute: AppRoutes.movieDetails,
         routes: AppRoutes.routes,
       ),
     );

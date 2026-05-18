@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/app_colors.dart';
 
 class ProfileTabBar extends StatelessWidget {
   final int selectedIndex;
@@ -48,6 +47,8 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -56,7 +57,7 @@ class _TabItem extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? AppColors.primary : Colors.transparent,
+                color: isSelected ? colorScheme.primary : Colors.transparent,
                 width: 2.5,
               ),
             ),
@@ -67,8 +68,8 @@ class _TabItem extends StatelessWidget {
               Icon(
                 icon,
                 color: isSelected
-                    ? AppColors.primary
-                    : AppColors.white.withValues(alpha: 0.45),
+                    ? colorScheme.primary
+                    : colorScheme.onSurface.withValues(alpha: 0.45),
                 size: 22.sp,
               ),
               6.verticalSpace,
@@ -79,8 +80,8 @@ class _TabItem extends StatelessWidget {
                   fontWeight:
                       isSelected ? FontWeight.w600 : FontWeight.w400,
                   color: isSelected
-                      ? AppColors.white
-                      : AppColors.white.withValues(alpha: 0.45),
+                      ? colorScheme.onSurface
+                      : colorScheme.onSurface.withValues(alpha: 0.45),
                 ),
               ),
             ],
@@ -89,8 +90,4 @@ class _TabItem extends StatelessWidget {
       ),
     );
   }
-}
-
-extension on int {
-  Widget get verticalSpace => SizedBox(height: toDouble().h);
 }

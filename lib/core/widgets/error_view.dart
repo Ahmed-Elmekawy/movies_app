@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../utils/app_colors.dart';
 import 'custom_button.dart';
 
 class AppErrorView extends StatelessWidget {
@@ -25,7 +23,7 @@ class AppErrorView extends StatelessWidget {
             Icon(
               Icons.error_outline_rounded,
               size: 80.r,
-              color: AppColors.red,
+              color: Theme.of(context).colorScheme.error,
             ),
             24.verticalSpace,
             Text(

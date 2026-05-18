@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/app_colors.dart';
 
 class EditProfileAvatarSection extends StatelessWidget {
   final String avatarPath;
@@ -14,6 +13,8 @@ class EditProfileAvatarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Stack(
@@ -22,14 +23,14 @@ class EditProfileAvatarSection extends StatelessWidget {
           CircleAvatar(radius: 62.r, backgroundImage: AssetImage(avatarPath)),
           Container(
             padding: REdgeInsets.all(7),
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.edit_rounded,
               size: 16.sp,
-              color: AppColors.primaryVariant,
+              color: colorScheme.onPrimary,
             ),
           ),
         ],

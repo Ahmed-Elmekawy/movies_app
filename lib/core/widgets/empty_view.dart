@@ -53,7 +53,3 @@ class AppEmptyView extends StatelessWidget {
     );
   }
 }
-
-extension on int {
-  Widget get verticalSpace => SizedBox(height: toDouble().h);
-}

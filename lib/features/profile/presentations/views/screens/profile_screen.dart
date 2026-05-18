@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_assets.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_routes.dart';
 import '../../../../../core/utils/navigation_service.dart';
 import '../widgets/movies_grid_tab.dart';
@@ -17,23 +16,20 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // ── Mock profile data ──────────────────────────────────────────────────────
   String _name = 'John Safwat';
   String _avatarPath = AppImages.avatar1;
   int _selectedTab = 0;
-
-  // Simulate: Watch List = 12 items, History = 10 items
   final int _watchListCount = 12;
   final int _historyCount = 10;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.primaryVariant,
       body: SafeArea(
         child: Column(
           children: [
-            // ── Header ──────────────────────────────────────────────────────
             ProfileHeaderSection(
               avatarPath: _avatarPath,
               name: _name,
@@ -42,20 +38,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             20.verticalSpace,
-
-            // ── Action Buttons ───────────────────────────────────────────────
             ProfileActionButtonsSection(
               onEditProfile: () async {
                 final result = await NavigationService.navigateTo(
                   context,
                   AppRoutes.editProfile,
-                  arguments: {
-                    'name': _name,
-                    'avatar': _avatarPath,
-                  },
+                  arguments: {'name': _name, 'avatar': _avatarPath},
                 );
-                
-                if (result != null && result is Map<String, String> && mounted) {
+                if (result != null &&
+                    result is Map<String, dynamic> &&
+                    mounted) {
                   setState(() {
                     _name = result['name'] ?? _name;
                     _avatarPath = result['avatar'] ?? _avatarPath;
@@ -66,10 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // TODO: sign out
               },
             ),
-
             20.verticalSpace,
-
-            // ── Tab Bar ──────────────────────────────────────────────────────
             Padding(
               padding: REdgeInsets.symmetric(horizontal: 20),
               child: ProfileTabBar(
@@ -77,22 +66,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onTabChanged: (i) => setState(() => _selectedTab = i),
               ),
             ),
-
-            // Divider
             Container(
               height: 1,
-              color: AppColors.white.withValues(alpha: 0.08),
+              color: colorScheme.onSurface.withValues(alpha: 0.08),
             ),
-
-            // ── Tab Content ──────────────────────────────────────────────────
             Expanded(
               child: _selectedTab == 0
-                  ? const MoviesGridTab(
-                      isEmpty: true,
-                    ) // Watch List – empty state
-                  : const MoviesGridTab(
-                      isEmpty: false,
-                    ), // History – with mock movies
+                  ? const MoviesGridTab(isEmpty: true)
+                  : const MoviesGridTab(isEmpty: false),
             ),
           ],
         ),

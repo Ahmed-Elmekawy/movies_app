@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_assets.dart';
 
 class AvatarPickerBottomSheet extends StatefulWidget {
@@ -17,10 +16,11 @@ class AvatarPickerBottomSheet extends StatefulWidget {
     BuildContext context, {
     required String currentAvatar,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.secondaryVariant,
+      backgroundColor: colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
@@ -47,6 +47,8 @@ class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SafeArea(
       child: Padding(
         padding: REdgeInsets.fromLTRB(20, 16, 20, 24),
@@ -58,7 +60,7 @@ class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: AppColors.white.withValues(alpha: 0.25),
+                color: colorScheme.onSurface.withValues(alpha: 0.25),
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
@@ -86,12 +88,12 @@ class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
                       borderRadius: BorderRadius.circular(16.r),
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.primary
-                            : AppColors.white.withValues(alpha: 0.15),
+                            ? colorScheme.primary
+                            : colorScheme.onSurface.withValues(alpha: 0.15),
                         width: isSelected ? 3 : 1.5,
                       ),
                       color: isSelected
-                          ? AppColors.primary.withValues(alpha: 0.12)
+                          ? colorScheme.primary.withValues(alpha: 0.12)
                           : Colors.transparent,
                     ),
                     child: ClipRRect(

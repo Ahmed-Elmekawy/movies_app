@@ -23,6 +23,12 @@ abstract class AppImages {
   static const String avatar7 = 'assets/images/avatar_7.png';
   static const String avatar8 = 'assets/images/avatar_8.png';
   static const String avatar9 = 'assets/images/avatar_9.png';
+  static const String onboarding1 = 'assets/images/Onboarding 1.png';
+  static const String onboarding2 = 'assets/images/Onboarding 2.png';
+  static const String onboarding3 = 'assets/images/Onboarding 3.png';
+  static const String onboarding4 = 'assets/images/Onboarding 4.png';
+  static const String onboarding5 = 'assets/images/Onboarding 5.png';
+  static const String onboarding6 = 'assets/images/Onboarding 6.png';
 
   static const List<String> avatars = [
     avatar1,

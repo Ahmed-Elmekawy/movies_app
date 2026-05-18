@@ -9,19 +9,14 @@ abstract class AppRoutes {
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
   static const String movieDetails = '/movie-details';
-
-  static Map<String, WidgetBuilder> get routes => {
-    profile: (context) => const ProfileScreen(),
-    editProfile: (context) => const EditProfileScreen(),
-    movieDetails: (context) => const MovieDetailsScreen(),
-  };
   static const String loginScreen = '/loginScreen';
   static const String onBoardingScreen = '/onboardingScreen';
 
   static Map<String, WidgetBuilder> get routes => {
-        onBoardingScreen: (context) => const OnBoardingScreen(),
-        loginScreen: (context) => const LoginScreen(),
-        profile: (context) => const ProfileScreen(),
-        editProfile: (context) => const EditProfileScreen(),
-      };
+    movieDetails: (context) => const MovieDetailsScreen(),
+    onBoardingScreen: (context) => const OnBoardingScreen(),
+    loginScreen: (context) => const LoginScreen(),
+    profile: (context) => const ProfileScreen(),
+    editProfile: (context) => const EditProfileScreen(),
+  };
 }

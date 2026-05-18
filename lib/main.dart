@@ -9,19 +9,17 @@ import 'core/utils/app_routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  
-  final prefs = di.sl<SharedPreferences>();
-  final bool showOnBoarding = prefs.getBool(CacheConstants.onBoardingKey) ?? true;
-
-  runApp(MyApp(initialRoute: showOnBoarding ? AppRoutes.onBoardingScreen : AppRoutes.loginScreen));
+  runApp(const MoviesApp());
 }
 
-class MyApp extends StatelessWidget {
-  final String initialRoute;
-  const MyApp({super.key, required this.initialRoute});
+class MoviesApp extends StatelessWidget {
+
+  const MoviesApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final prefs = di.sl<SharedPreferences>();
+    final bool showOnBoarding = prefs.getBool(CacheConstants.onBoardingKey) ?? true;
     return ScreenUtilInit(
       designSize: const Size(390, 844),
       minTextAdapt: true,
@@ -30,8 +28,7 @@ class MyApp extends StatelessWidget {
         title: 'Movies App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        initialRoute: AppRoutes.movieDetails,
-        initialRoute: initialRoute,
+        initialRoute: showOnBoarding? AppRoutes.onBoardingScreen : AppRoutes.movieDetails,
         routes: AppRoutes.routes,
       ),
     );

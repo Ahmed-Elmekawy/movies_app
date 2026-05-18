@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         title: 'Movies App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
+        initialRoute: AppRoutes.movieDetails,
         initialRoute: initialRoute,
         routes: AppRoutes.routes,
       ),

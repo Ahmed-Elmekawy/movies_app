@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/app_colors.dart';
 
 abstract class AppTheme {
@@ -16,79 +17,108 @@ abstract class AppTheme {
     ),
 
     appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.primaryVariant,
+      backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
+      iconTheme: IconThemeData(color: AppColors.white, size: 24),
+    ),
+
+    iconTheme: const IconThemeData(
+      color: AppColors.primary,
+      size: 24,
+    ),
+
+    cardTheme: CardThemeData(
+      color: AppColors.secondaryVariant,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+    ),
+
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.secondaryVariant,
+      padding: REdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      labelStyle: const TextStyle(
+        color: AppColors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.r),
+        side: BorderSide.none,
+      ),
     ),
 
     // Text Themes
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
+    textTheme: TextTheme(
+      displayLarge: const TextStyle(
         color: AppColors.white,
         fontSize: 32,
         fontWeight: FontWeight.bold,
       ),
-      displayMedium: TextStyle(
+      displayMedium: const TextStyle(
         color: AppColors.white,
         fontSize: 28,
         fontWeight: FontWeight.bold,
       ),
-      displaySmall: TextStyle(
+      displaySmall: const TextStyle(
         color: AppColors.white,
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),
-      headlineMedium: TextStyle(
+      headlineMedium: const TextStyle(
         color: AppColors.white,
         fontSize: 20,
         fontWeight: FontWeight.w600,
       ),
-      headlineSmall: TextStyle(
+      headlineSmall: const TextStyle(
         color: AppColors.white,
         fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.bold,
       ),
-      titleLarge: TextStyle(
+      titleLarge: const TextStyle(
         color: AppColors.white,
         fontSize: 16,
         fontWeight: FontWeight.bold,
       ),
-      titleMedium: TextStyle(
+      titleMedium: const TextStyle(
         color: AppColors.white,
         fontSize: 14,
         fontWeight: FontWeight.w600,
       ),
-      titleSmall: TextStyle(
+      titleSmall: const TextStyle(
         color: AppColors.white,
         fontSize: 12,
         fontWeight: FontWeight.w600,
       ),
-      bodyLarge: TextStyle(
+      bodyLarge: const TextStyle(
         color: AppColors.white,
         fontSize: 16,
         fontWeight: FontWeight.normal,
       ),
       bodyMedium: TextStyle(
-        color: AppColors.white,
+        color: AppColors.white.withValues(alpha: 0.9),
         fontSize: 14,
         fontWeight: FontWeight.normal,
+        height: 1.6.h,
       ),
       bodySmall: TextStyle(
-        color: AppColors.white,
+        color: AppColors.white.withValues(alpha: 0.6),
         fontSize: 12,
         fontWeight: FontWeight.normal,
       ),
-      labelLarge: TextStyle(
+      labelLarge: const TextStyle(
         color: AppColors.white,
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      labelMedium: TextStyle(
+      labelMedium: const TextStyle(
         color: AppColors.white,
         fontSize: 12,
         fontWeight: FontWeight.w500,
       ),
-      labelSmall: TextStyle(
+      labelSmall: const TextStyle(
         color: AppColors.white,
         fontSize: 10,
         fontWeight: FontWeight.w500,
@@ -101,7 +131,7 @@ abstract class AppTheme {
         foregroundColor: AppColors.primaryVariant,
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       ),
     ),
 
@@ -110,23 +140,23 @@ abstract class AppTheme {
       fillColor: AppColors.secondaryVariant.withValues(alpha: 0.5),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         borderSide: const BorderSide(color: AppColors.primary, width: 2),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         borderSide: const BorderSide(color: AppColors.red, width: 2),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         borderSide: const BorderSide(color: AppColors.red, width: 2),
       ),
       hintStyle: const TextStyle(

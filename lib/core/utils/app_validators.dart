@@ -41,6 +41,18 @@ class AppValidators {
     return null;
   }
 
+  static String? validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Phone number is required";
+    }
+    // Egyptian phone number regex (010, 011, 012, 015 + 8 digits)
+    final phoneRegex = RegExp(r'^(010|011|012|015)[0-9]{8}$');
+    if (!phoneRegex.hasMatch(value)) {
+      return "Enter a valid Egyptian phone number";
+    }
+    return null;
+  }
+
   static String? validateRequired(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
       return "$fieldName is required";

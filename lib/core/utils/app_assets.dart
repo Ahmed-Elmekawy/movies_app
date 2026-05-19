@@ -3,6 +3,7 @@ abstract class AppImages {
   static const String splashLogo = 'assets/images/Splash Logo.png';
   static const String movie = 'assets/images/movie.png';
   static const String brandingImage = 'assets/images/branding_image.png';
+  static const String forgetPassword = 'assets/images/Forgot password-bro 1.png';
 
   // Movie Screenshots
   static const String screenshot1 = 'assets/images/large-screenshot1.png';
@@ -43,6 +44,11 @@ abstract class AppImages {
   ];
 }
 
-abstract class AppSVGs {}
+abstract class AppSVGs {
+  static const String emailIcon = 'assets/icons/Email_Icon.svg';
+  static const String passwordIcon = 'assets/icons/Password_Icon.svg';
+  static const String nameIcon = 'assets/icons/Name_Icon.svg';
+  static const String phoneIcon = 'assets/icons/Phone_Icon.svg';
+}
 
 abstract class AppAnimations {}

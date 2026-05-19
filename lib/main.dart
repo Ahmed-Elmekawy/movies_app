@@ -28,7 +28,7 @@ class MoviesApp extends StatelessWidget {
         title: 'Movies App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        initialRoute: showOnBoarding? AppRoutes.onBoardingScreen : AppRoutes.movieDetails,
+        initialRoute: showOnBoarding? AppRoutes.onBoardingScreen : AppRoutes.loginScreen,
         routes: AppRoutes.routes,
       ),
     );

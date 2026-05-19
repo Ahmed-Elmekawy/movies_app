@@ -26,7 +26,7 @@ class EditProfileFormSection extends StatelessWidget {
           CustomTextField(
             controller: nameController,
             hintText: 'Full Name',
-            prefixIcon: Icons.person,
+            prefixIcon: const Icon(Icons.person),
             validator: (v) =>
                 (v == null || v.trim().isEmpty) ? 'Name is required' : null,
           ),
@@ -35,7 +35,7 @@ class EditProfileFormSection extends StatelessWidget {
           CustomTextField(
             controller: phoneController,
             hintText: 'Phone Number',
-            prefixIcon: Icons.phone,
+            prefixIcon: const Icon(Icons.phone),
             keyboardType: TextInputType.phone,
             validator: (v) =>
                 (v == null || v.trim().isEmpty) ? 'Phone is required' : null,

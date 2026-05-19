@@ -62,11 +62,9 @@ class AvatarCarousel extends StatelessWidget {
         shape: BoxShape.circle,
         color: const Color(0xFFB1D8FF).withValues(alpha: isSelected ? 1.0 : 0.5),
       ),
-      child: ClipOval(
-        child: Image.asset(
-          AppImages.avatars[index],
-          fit: BoxFit.contain,
-        ),
+      child: Image.asset(
+        AppImages.avatars[index],
+        fit: BoxFit.contain,
       ),
     );
   }

@@ -8,15 +8,16 @@ class RegisterPrompt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           "Don't Have Account ? ",
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.white,
-                fontWeight: FontWeight.w400,
-              ),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: AppColors.white,
+            fontWeight: FontWeight.w400,
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -29,10 +30,10 @@ class RegisterPrompt extends StatelessWidget {
           },
           child: Text(
             'Create One',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w700,
-                ),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.primary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ],

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/utils/app_colors.dart';
 import 'widgets/avatar_carousel.dart';
-import 'widgets/language_switcher.dart';
+import '../../../core/widgets/language_switcher.dart';
 import 'widgets/login_prompt.dart';
 import 'widgets/register_form.dart';
 
@@ -34,20 +33,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.primaryVariant,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.primary),
+          icon: Icon(Icons.arrow_back_ios_new, color: theme.colorScheme.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Register',
           style: TextStyle(
-            color: AppColors.primary,
+            color: theme.colorScheme.primary,
             fontSize: 18.sp,
             fontWeight: FontWeight.w400,
           ),

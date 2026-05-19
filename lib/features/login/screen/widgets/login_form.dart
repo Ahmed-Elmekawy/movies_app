@@ -27,6 +27,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Form(
       key: formKey,
       child: Column(
@@ -68,8 +69,8 @@ class LoginForm extends StatelessWidget {
               ),
               child: Text(
                 'Forget Password ?',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.primary,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -77,7 +78,7 @@ class LoginForm extends StatelessWidget {
           ),
           24.verticalSpace,
           isLoading
-              ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+              ? Center(child: CircularProgressIndicator(color: theme.colorScheme.primary))
               : CustomButton(
                   txtButton: 'Login',
                   onPressed: () {
@@ -89,7 +90,7 @@ class LoginForm extends StatelessWidget {
                   textStyle: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.primaryVariant,
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
         ],

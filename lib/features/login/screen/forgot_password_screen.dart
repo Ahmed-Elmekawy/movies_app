@@ -30,13 +30,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.primary),
+          icon: Icon(Icons.arrow_back_ios_new, color: theme.colorScheme.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Forget Password',
           style: TextStyle(
-            color: AppColors.primary,
+            color: theme.colorScheme.primary,
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,
           ),
@@ -79,8 +79,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       // Proceed with verification
                     }
                   },
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.primaryVariant,
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
                   height: 52.h,
                   textStyle: TextStyle(
                     fontSize: 18.sp,

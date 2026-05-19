@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../register/screen/widgets/language_switcher.dart';
+import '../../../core/widgets/language_switcher.dart';
 import 'forgot_password_screen.dart';
 import 'widgets/login_form.dart';
 import 'widgets/login_header.dart';
@@ -13,8 +12,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.primaryVariant,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

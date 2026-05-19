@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/utils/app_colors.dart';
 
 class LanguageSwitcher extends StatefulWidget {
   const LanguageSwitcher({super.key});
@@ -14,6 +13,7 @@ class _LanguageSwitcherState extends State<LanguageSwitcher> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: GestureDetector(
         onTap: () {
@@ -27,7 +27,7 @@ class _LanguageSwitcherState extends State<LanguageSwitcher> {
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(color: AppColors.primary, width: 2),
+            border: Border.all(color: theme.colorScheme.primary, width: 2),
             color: Colors.transparent,
           ),
           child: Stack(
@@ -39,9 +39,9 @@ class _LanguageSwitcherState extends State<LanguageSwitcher> {
                 child: Container(
                   width: 28.w,
                   height: 28.h,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.primary,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ),

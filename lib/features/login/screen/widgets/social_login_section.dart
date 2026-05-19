@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/utils/app_colors.dart';
 import '../../../../core/widgets/custom_button.dart';
 
 class SocialLoginSection extends StatelessWidget {
@@ -13,28 +12,42 @@ class SocialLoginSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Row(
           children: [
-            const Expanded(child: Divider(color: AppColors.primary, endIndent: 10)),
+            Expanded(
+              child: Divider(
+                color: theme.colorScheme.primary,
+                endIndent: 10,
+              ),
+            ),
             Text(
               'OR',
-              style: TextStyle(color: AppColors.primary, fontSize: 14.sp),
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+                fontSize: 14.sp,
+              ),
             ),
-            const Expanded(child: Divider(color: AppColors.primary, indent: 10)),
+            Expanded(
+              child: Divider(
+                color: theme.colorScheme.primary,
+                indent: 10,
+              ),
+            ),
           ],
         ),
         20.verticalSpace,
         CustomButton(
           txtButton: 'Login With Google',
           onPressed: onGoogleLoginPressed,
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.primaryVariant,
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
           textStyle: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.primaryVariant,
+            color: theme.colorScheme.onPrimary,
           ),
           icon: Icons.g_mobiledata,
         ),

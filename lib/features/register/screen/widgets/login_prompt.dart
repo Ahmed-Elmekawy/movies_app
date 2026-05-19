@@ -7,6 +7,7 @@ class LoginPrompt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -23,7 +24,7 @@ class LoginPrompt extends StatelessWidget {
           child: Text(
             'Login',
             style: TextStyle(
-              color: AppColors.primary,
+              color: theme.colorScheme.primary,
               fontSize: 14.sp,
               fontWeight: FontWeight.w700,
             ),

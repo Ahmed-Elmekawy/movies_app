@@ -31,6 +31,7 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Form(
       key: formKey,
       child: Column(
@@ -78,12 +79,12 @@ class RegisterForm extends StatelessWidget {
           ),
           24.verticalSpace,
           isLoading
-              ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+              ? Center(child: CircularProgressIndicator(color: theme.colorScheme.primary))
               : CustomButton(
                   txtButton: 'Create Account',
                   onPressed: onRegisterPressed,
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.primaryVariant,
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
                   borderRadius: 12.r,
                   height: 52.h,
                   textStyle: TextStyle(

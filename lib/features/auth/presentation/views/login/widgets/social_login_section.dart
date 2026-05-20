@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/widgets/custom_button.dart';
 
 class SocialLoginSection extends StatelessWidget {
   final VoidCallback onGoogleLoginPressed;

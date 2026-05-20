@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/widgets/language_switcher.dart';
-import 'forgot_password_screen.dart';
-import 'widgets/login_form.dart';
-import 'widgets/login_header.dart';
-import 'widgets/register_prompt.dart';
-import 'widgets/social_login_section.dart';
+import 'package:movies_app/core/widgets/language_switcher.dart';
+import 'package:movies_app/features/auth/presentation/views/login/widgets/login_form.dart';
+import 'package:movies_app/features/auth/presentation/views/login/widgets/login_header.dart';
+import 'package:movies_app/features/auth/presentation/views/register/widgets/register_prompt.dart';
+import 'package:movies_app/features/auth/presentation/views/login/widgets/social_login_section.dart';
+import '../../forgot_password/screens/forgot_password_screen.dart';
+
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

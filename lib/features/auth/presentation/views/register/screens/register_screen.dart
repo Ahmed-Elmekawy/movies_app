@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'widgets/avatar_carousel.dart';
-import '../../../core/widgets/language_switcher.dart';
-import 'widgets/login_prompt.dart';
-import 'widgets/register_form.dart';
+import 'package:movies_app/core/widgets/language_switcher.dart';
+import 'package:movies_app/features/auth/presentation/views/register/widgets/avatar_carousel.dart';
+import 'package:movies_app/features/auth/presentation/views/login/widgets/login_prompt.dart';
+import 'package:movies_app/features/auth/presentation/views/register/widgets/register_form.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int _selectedAvatarIndex = 1;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
+  late final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -76,9 +78,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 confirmPasswordController: _confirmPasswordController,
                 phoneController: _phoneController,
                 isLoading: false,
-                onRegisterPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Handle registration logic
+                onRegisterPressed: () async {
+                  if (_formKey.currentState!.validate() == false) return;
+                  try {
+                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+                  }catch (exception) {
+                    if (exception is FirebaseAuthException) {
+                      if(exception.code == 'weak-password'){
+                      }
+                    }
                   }
                 },
               ),

@@ -17,6 +17,7 @@ abstract class AppTheme {
     ),
 
     appBarTheme: const AppBarTheme(
+      surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/constants/app_constants.dart';
 import '../../../../../../core/utils/app_assets.dart';
 import '../../../../../../core/utils/app_colors.dart';
 
@@ -19,7 +20,7 @@ class AvatarCarousel extends StatelessWidget {
     return Column(
       children: [
         CarouselSlider.builder(
-          itemCount: AppImages.avatars.length,
+          itemCount: AppConstants.avatars.length,
           itemBuilder: (context, index, realIndex) {
             final isSelected = index == selectedAvatarIndex;
             return _buildAvatarItem(
@@ -63,7 +64,7 @@ class AvatarCarousel extends StatelessWidget {
         color: const Color(0xFFB1D8FF).withValues(alpha: isSelected ? 1.0 : 0.5),
       ),
       child: Image.asset(
-        AppImages.avatars[index],
+        AppConstants.avatars[index],
         fit: BoxFit.contain,
       ),
     );

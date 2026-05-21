@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/constants/app_constants.dart';
 import '../../../../../core/utils/app_assets.dart';
 
 class AvatarPickerBottomSheet extends StatefulWidget {
@@ -73,9 +74,9 @@ class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
                 crossAxisSpacing: 12.w,
                 mainAxisSpacing: 12.h,
               ),
-              itemCount: AppImages.avatars.length,
+              itemCount: AppConstants.avatars.length,
               itemBuilder: (_, index) {
-                final avatar = AppImages.avatars[index];
+                final avatar = AppConstants.avatars[index];
                 final isSelected = avatar == _selected;
                 return GestureDetector(
                   onTap: () {

@@ -79,19 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 phoneController: _phoneController,
                 isLoading: false,
                 onRegisterPressed: () async {
-                  if (_formKey.currentState!.validate() == false) return;
-                  try {
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                  }catch (exception) {
-                    if (exception is FirebaseAuthException) {
-                      if(exception.code == 'weak-password'){
-                      }
-                    }
-                  }
-                },
+                  if (_formKey.currentState!.validate() == false) {}
+                }
               ),
               16.verticalSpace,
               const LoginPrompt(),

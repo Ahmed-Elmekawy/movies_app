@@ -31,17 +31,7 @@ abstract class AppImages {
   static const String onboarding5 = 'assets/images/Onboarding 5.png';
   static const String onboarding6 = 'assets/images/Onboarding 6.png';
 
-  static const List<String> avatars = [
-    avatar1,
-    avatar2,
-    avatar3,
-    avatar4,
-    avatar5,
-    avatar6,
-    avatar7,
-    avatar8,
-    avatar9,
-  ];
+
 }
 
 abstract class AppSVGs {

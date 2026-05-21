@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
 import 'package:movies_app/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/config/theme/app_theme.dart';
@@ -29,12 +31,15 @@ class MoviesApp extends StatelessWidget {
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, __) => MaterialApp(
-        title: 'Movies App',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
-        initialRoute: showOnBoarding? AppRoutes.onBoardingScreen : AppRoutes.loginScreen,
-        routes: AppRoutes.routes,
+      builder: (_, __) => BlocProvider(
+        create: (context) => di.sl<AuthCubit>(),
+        child: MaterialApp(
+          title: 'Movies App',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.darkTheme,
+          initialRoute: showOnBoarding? AppRoutes.onBoardingScreen : AppRoutes.loginScreen,
+          routes: AppRoutes.routes,
+        ),
       ),
     );
   }

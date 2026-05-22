@@ -18,12 +18,10 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   @override
   Future<UserModel> signInWithGoogle() async {
     try {
-      _googleSignIn.initialize(serverClientId: '570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com');
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
 
 
-      final GoogleSignInAuthentication googleAuth =
-           googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
       );
@@ -44,7 +42,6 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
           name: user.displayName ?? '',
           phone: user.phoneNumber ?? '',
           email: user.email ?? '',
-          avatar: user.photoURL ?? '',
           watchList: [],
           history: [],
         );
@@ -54,10 +51,111 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
       return userModel;
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleAuthException(e));
-    } on GoogleSignInException catch (e) {
-      throw Exception(_handleGoogleSignInException(e));
     } catch (e) {
       throw Exception('An unknown error occurred during Google sign-in: $e');
+    }
+  }
+
+  @override
+  Future<UserModel> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final User? user = userCredential.user;
+
+      if (user == null) {
+        throw Exception('User is null after sign in');
+      }
+
+      UserModel? userModel = await _getFromFireStore(user.uid);
+      if (userModel == null) {
+        throw Exception('User data not found in Firestore');
+      }
+      return userModel;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_handleAuthException(e));
+    } catch (e) {
+      throw Exception('An unknown error occurred during sign-in: $e');
+    }
+  }
+
+  @override
+  Future<UserModel> signUpWithEmailAndPassword({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String avatar,
+  }) async {
+    try {
+      final UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final User? user = userCredential.user;
+
+      if (user == null) {
+        throw Exception('User is null after sign up');
+      }
+
+      final userModel = UserModel(
+        id: user.uid,
+        name: name,
+        email: email,
+        phone: phone,
+        avatar: avatar,
+        watchList: [],
+        history: [],
+      );
+
+      await _addToFireStore(userModel);
+      return userModel;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_handleAuthException(e));
+    } catch (e) {
+      throw Exception('An unknown error occurred during sign-up: $e');
+    }
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_handleAuthException(e));
+    } catch (e) {
+      throw Exception('An error occurred while sending reset email: $e');
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+        await _googleSignIn.signOut();
+
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      throw Exception('An error occurred during sign-out: $e');
+    }
+  }
+
+  @override
+  Future<UserModel?> checkAuthStatus() async {
+    try {
+      final User? user = _firebaseAuth.currentUser;
+      if (user != null) {
+        final userModel = await _getFromFireStore(user.uid);
+        if (userModel == null) {
+          await signOut();
+          return null;
+        }
+        return userModel;
+      }
+      return null;
+    } catch (e) {
+      throw Exception('An error occurred while checking auth status: $e');
     }
   }
 
@@ -73,7 +171,6 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     await _firestore.collection('users').doc(user.id).set(user.toJson());
   }
 }
-
 
 String _handleAuthException(FirebaseAuthException e) {
   switch (e.code) {
@@ -101,14 +198,5 @@ String _handleAuthException(FirebaseAuthException e) {
       return 'An account already exists with the same email address but different sign-in credentials.';
     default:
       return e.message ?? 'Authentication error occurred.';
-  }
-}
-
-String _handleGoogleSignInException(GoogleSignInException e) {
-  switch (e.code) {
-    case GoogleSignInExceptionCode.canceled:
-      return 'Sign-in canceled.';
-    default:
-      return 'Google sign-in failed.';
   }
 }

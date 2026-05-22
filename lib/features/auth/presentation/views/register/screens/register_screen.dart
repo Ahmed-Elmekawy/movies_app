@@ -1,11 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
+import 'package:movies_app/core/utils/app_routes.dart';
+import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
+import 'package:movies_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:movies_app/core/widgets/language_switcher.dart';
 import 'package:movies_app/features/auth/presentation/views/register/widgets/avatar_carousel.dart';
 import 'package:movies_app/features/auth/presentation/views/login/widgets/login_prompt.dart';
 import 'package:movies_app/features/auth/presentation/views/register/widgets/register_form.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,13 +18,25 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  int _selectedAvatarIndex = 1;
+  int _selectedAvatarIndex = 0;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  late final _emailController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _phoneController = TextEditingController();
+
+  final List<String> avatars = [
+    'avatar1',
+    'avatar2',
+    'avatar3',
+    'avatar4',
+    'avatar5',
+    'avatar6',
+    'avatar7',
+    'avatar8',
+    'avatar9',
+  ];
 
   @override
   void dispose() {
@@ -36,61 +51,86 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: theme.colorScheme.primary),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Register',
-          style: TextStyle(
-            color: theme.colorScheme.primary,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AvatarCarousel(
-                selectedAvatarIndex: _selectedAvatarIndex,
-                onAvatarChanged: (index) {
-                  setState(() {
-                    _selectedAvatarIndex = index;
-                  });
-                },
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          UIUtils.showToast("Registration Successful");
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutes.loginScreen,
+            (route) => false,
+          );
+        } else if (state is AuthFailure) {
+          UIUtils.showToast(state.message, isError: true);
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
+        return Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new, color: theme.colorScheme.primary),
+              onPressed: () => Navigator.pop(context),
+            ),
+            title: Text(
+              'Register',
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w400,
               ),
-              24.verticalSpace,
-              RegisterForm(
-                formKey: _formKey,
-                nameController: _nameController,
-                emailController: _emailController,
-                passwordController: _passwordController,
-                confirmPasswordController: _confirmPasswordController,
-                phoneController: _phoneController,
-                isLoading: false,
-                onRegisterPressed: () async {
-                  if (_formKey.currentState!.validate() == false) {}
-                }
-              ),
-              16.verticalSpace,
-              const LoginPrompt(),
-              24.verticalSpace,
-              const LanguageSwitcher(),
-              24.verticalSpace,
-            ],
+            ),
           ),
-        ),
-      ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AvatarCarousel(
+                    selectedAvatarIndex: _selectedAvatarIndex,
+                    onAvatarChanged: (index) {
+                      setState(() {
+                        _selectedAvatarIndex = index;
+                      });
+                    },
+                  ),
+                  24.verticalSpace,
+                  RegisterForm(
+                    formKey: _formKey,
+                    nameController: _nameController,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    confirmPasswordController: _confirmPasswordController,
+                    phoneController: _phoneController,
+                    isLoading: isLoading,
+                    onRegisterPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AuthCubit>().register(
+                              name: _nameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text,
+                              phone: _phoneController.text.trim(),
+                              avatar: avatars[_selectedAvatarIndex],
+                            );
+                      }
+                    },
+                  ),
+                  16.verticalSpace,
+                  const LoginPrompt(),
+                  24.verticalSpace,
+                  const LanguageSwitcher(),
+                  24.verticalSpace,
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

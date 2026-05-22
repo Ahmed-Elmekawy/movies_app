@@ -18,4 +18,68 @@ class AuthFirebaseRepositoryImpl implements AuthFirebaseRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final userModel =
+          await _authFirebaseDataSource.signInWithEmailAndPassword(email, password);
+      return Right(userModel.toUserEntity());
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> signUpWithEmailAndPassword({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String avatar,
+  }) async {
+    try {
+      final userModel = await _authFirebaseDataSource.signUpWithEmailAndPassword(
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+        avatar: avatar,
+      );
+      return Right(userModel.toUserEntity());
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> sendPasswordResetEmail(String email) async {
+    try {
+      await _authFirebaseDataSource.sendPasswordResetEmail(email);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> signOut() async {
+    try {
+      await _authFirebaseDataSource.signOut();
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity?>> checkAuthStatus() async {
+    try {
+      final userModel = await _authFirebaseDataSource.checkAuthStatus();
+      return Right(userModel?.toUserEntity());
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

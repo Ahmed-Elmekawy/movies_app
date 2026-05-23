@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies_app/core/widgets/empty_view.dart';
+import '../../../../../core/widgets/empty_view.dart';
+import '../../../../../core/widgets/movies_grid.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../widgets/search_field.dart';
-import '../widgets/search_result_grid.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -14,6 +14,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   bool _isSearching = false;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
               20.verticalSpace,
               Expanded(
                 child: _isSearching
-                    ? const SearchResultGrid()
+                    ? const MoviesGrid(itemCount: 10,)
                     : const AppEmptyView(imagePath: AppImages.empty),
               ),
             ],

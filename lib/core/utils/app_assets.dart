@@ -5,6 +5,12 @@ abstract class AppImages {
   static const String brandingImage = 'assets/images/branding_image.png';
   static const String forgetPassword = 'assets/images/Forgot password-bro 1.png';
 
+  // Navigation Icons
+  static const String homeIcon = 'assets/images/Home.png';
+  static const String searchIcon = 'assets/images/Search.png';
+  static const String exploreIcon = 'assets/images/explore.png';
+  static const String profileIcon = 'assets/images/Profile.png';
+
   // Movie Screenshots
   static const String screenshot1 = 'assets/images/large-screenshot1.png';
   static const String screenshot2 = 'assets/images/large-screenshot2.png';
@@ -13,6 +19,10 @@ abstract class AppImages {
   // Movie related
   static const String poster = 'assets/images/poster.png';
   static const String actor = 'assets/images/actor.png';
+
+  // Section Headers
+  static const String availableNow = 'assets/images/Available Now.png';
+  static const String watchNow = 'assets/images/Watch Now.png';
 
   // Avatars
   static const String avatar1 = 'assets/images/avatar_1.png';
@@ -30,8 +40,6 @@ abstract class AppImages {
   static const String onboarding4 = 'assets/images/Onboarding 4.png';
   static const String onboarding5 = 'assets/images/Onboarding 5.png';
   static const String onboarding6 = 'assets/images/Onboarding 6.png';
-
-
 }
 
 abstract class AppSVGs {

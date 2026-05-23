@@ -16,7 +16,7 @@ class MovieItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(20.r),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -30,20 +30,20 @@ class MovieItem extends StatelessWidget {
             child: Container(
               padding: REdgeInsets.symmetric(horizontal: 5, vertical: 3),
               decoration: BoxDecoration(
-                color: theme.colorScheme.onPrimary.withValues(alpha: 0.88),
-                borderRadius: BorderRadius.circular(5.r),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.7),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.star_rounded,
-                    size: 18.sp,
+                    size: 20.sp,
                   ),
                   2.horizontalSpace,
                   Text(
                     rating,
-                    style: theme.textTheme.titleSmall,
+                    style: theme.textTheme.titleLarge,
                   ),
                 ],
               ),

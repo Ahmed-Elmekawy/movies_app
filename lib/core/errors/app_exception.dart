@@ -1,10 +1,10 @@
 abstract class AppException implements Exception{
   String message;
-  AppException({required this.message});
+  AppException(this.message);
 }
 
 
 class RemoteException extends AppException{
-  RemoteException({required super.message});
+  RemoteException(super.message);
 
 }

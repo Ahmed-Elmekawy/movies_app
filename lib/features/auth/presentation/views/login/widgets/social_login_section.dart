@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../core/utils/app_assets.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 
 class SocialLoginSection extends StatelessWidget {
   final VoidCallback onGoogleLoginPressed;
 
-  const SocialLoginSection({
-    super.key,
-    required this.onGoogleLoginPressed,
-  });
+  const SocialLoginSection({super.key, required this.onGoogleLoginPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +16,7 @@ class SocialLoginSection extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Divider(
-                color: theme.colorScheme.primary,
-                endIndent: 10,
-              ),
+              child: Divider(color: theme.colorScheme.primary, endIndent: 10),
             ),
             Text(
               'OR',
@@ -31,10 +26,7 @@ class SocialLoginSection extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Divider(
-                color: theme.colorScheme.primary,
-                indent: 10,
-              ),
+              child: Divider(color: theme.colorScheme.primary, indent: 10),
             ),
           ],
         ),
@@ -49,7 +41,7 @@ class SocialLoginSection extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.onPrimary,
           ),
-          icon: Icons.g_mobiledata,
+          svgIcon: AppSVGs.googleIcon,
         ),
       ],
     );

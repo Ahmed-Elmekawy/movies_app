@@ -15,6 +15,7 @@ import '../../features/auth/domain/use_cases/sign_in_with_google_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_out_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_up_with_email_and_password_use_case.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
+import '../utils/cache_helper.dart';
 
 final sl = GetIt.instance;
 
@@ -52,7 +53,8 @@ Future<void> init() async {
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+  sl.registerLazySingleton(() => CacheHelper(sl()));
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => GoogleSignIn.instance);

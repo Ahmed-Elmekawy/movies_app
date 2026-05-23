@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movies_app/features/auth/data/data_sources/auth_firebase_data_source.dart';
+import '../../../../core/errors/app_exception.dart';
 import '../models/user_model.dart';
 
 class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
@@ -18,20 +19,19 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   @override
   Future<UserModel> signInWithGoogle() async {
     try {
+      _googleSignIn.initialize(serverClientId: "570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com");
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
-
-
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user == null) {
-        throw Exception('User is null after sign in');
+        throw RemoteException('User is null after sign in');
       }
 
       UserModel? userModel = await _getFromFireStore(user.uid);
@@ -50,34 +50,37 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
 
       return userModel;
     } on FirebaseAuthException catch (e) {
-      throw Exception(_handleAuthException(e));
+      throw RemoteException(_handleAuthException(e));
     } catch (e) {
-      throw Exception('An unknown error occurred during Google sign-in: $e');
+      throw RemoteException(
+        'An unknown error occurred during Google sign-in: $e',
+      );
     }
   }
 
   @override
-  Future<UserModel> signInWithEmailAndPassword(String email, String password) async {
+  Future<UserModel> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
       final User? user = userCredential.user;
 
       if (user == null) {
-        throw Exception('User is null after sign in');
+        throw RemoteException('User is null after sign in');
       }
 
       UserModel? userModel = await _getFromFireStore(user.uid);
       if (userModel == null) {
-        throw Exception('User data not found in Firestore');
+        throw RemoteException('User data not found in Firestore');
       }
       return userModel;
     } on FirebaseAuthException catch (e) {
-      throw Exception(_handleAuthException(e));
+      throw RemoteException(_handleAuthException(e));
     } catch (e) {
-      throw Exception('An unknown error occurred during sign-in: $e');
+      throw RemoteException('An unknown error occurred during sign-in: $e');
     }
   }
 
@@ -90,14 +93,12 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     required String avatar,
   }) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
       final User? user = userCredential.user;
 
       if (user == null) {
-        throw Exception('User is null after sign up');
+        throw RemoteException('User is null after sign up');
       }
 
       final userModel = UserModel(
@@ -113,9 +114,9 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
       await _addToFireStore(userModel);
       return userModel;
     } on FirebaseAuthException catch (e) {
-      throw Exception(_handleAuthException(e));
+      throw RemoteException(_handleAuthException(e));
     } catch (e) {
-      throw Exception('An unknown error occurred during sign-up: $e');
+      throw RemoteException('An unknown error occurred during sign-up: $e');
     }
   }
 
@@ -124,20 +125,20 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw Exception(_handleAuthException(e));
+      throw RemoteException(_handleAuthException(e));
     } catch (e) {
-      throw Exception('An error occurred while sending reset email: $e');
+      throw RemoteException('An error occurred while sending reset email: $e');
     }
   }
 
   @override
   Future<void> signOut() async {
     try {
-        await _googleSignIn.signOut();
+      await _googleSignIn.signOut();
 
       await _firebaseAuth.signOut();
     } catch (e) {
-      throw Exception('An error occurred during sign-out: $e');
+      throw RemoteException('An error occurred during sign-out: $e');
     }
   }
 
@@ -155,7 +156,7 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
       }
       return null;
     } catch (e) {
-      throw Exception('An error occurred while checking auth status: $e');
+      throw RemoteException('An error occurred while checking auth status: $e');
     }
   }
 

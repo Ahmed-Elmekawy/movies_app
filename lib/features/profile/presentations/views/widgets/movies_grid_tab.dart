@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/empty_view.dart';
 import '../../../../../core/widgets/movie_item.dart';
 
@@ -36,7 +37,7 @@ class MoviesGridTab extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isEmpty) {
       return const AppEmptyView(
-        icon: Icons.local_movies_rounded,
+        imagePath: AppImages.empty,
         title: 'No Movies Yet',
         subtitle: 'Your watch list is empty',
       );

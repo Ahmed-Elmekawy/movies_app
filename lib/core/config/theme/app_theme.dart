@@ -24,6 +24,16 @@ abstract class AppTheme {
       iconTheme: IconThemeData(color: AppColors.white, size: 24),
     ),
 
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: AppColors.secondaryVariant,
+      selectedItemColor: AppColors.primary,
+      unselectedItemColor: AppColors.white.withValues(alpha: 0.6),
+      type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      elevation: 0,
+    ),
+
     iconTheme: const IconThemeData(
       color: AppColors.primary,
       size: 24,

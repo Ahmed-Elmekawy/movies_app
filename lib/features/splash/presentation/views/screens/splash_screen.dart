@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          Navigator.pushReplacementNamed(context, AppRoutes.profile);
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
         } else if (state is Unauthenticated) {
           final cacheHelper = sl<CacheHelper>();
           final bool isFirstTime = cacheHelper.getBool(key: CacheConstants.onBoardingKey) ?? true;

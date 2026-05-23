@@ -5,9 +5,11 @@ import '../../features/onboarding/screen/on_boarding_screen.dart';
 import '../../features/profile/presentations/views/screens/profile_screen.dart';
 import '../../features/profile/presentations/views/screens/edit_profile_screen.dart';
 import '../../features/movie_details/presentations/views/screens/movie_details_screen.dart';
+import '../../features/home/presentation/views/screens/home_screen.dart';
 
 abstract class AppRoutes {
   static const String splash = '/';
+  static const String home = '/home';
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
   static const String movieDetails = '/movie-details';
@@ -16,6 +18,7 @@ abstract class AppRoutes {
 
   static Map<String, WidgetBuilder> get routes => {
     splash: (context) => const SplashScreen(),
+    home: (context) => const HomeScreen(),
     movieDetails: (context) => const MovieDetailsScreen(),
     onBoardingScreen: (context) => const OnBoardingScreen(),
     loginScreen: (context) => const LoginScreen(),

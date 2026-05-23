@@ -33,23 +33,7 @@ class MoviesApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.darkTheme,
           initialRoute: AppRoutes.splash,
-          onGenerateRoute: (settings) {
-            final WidgetBuilder? builder = AppRoutes.routes[settings.name];
-            if (builder != null) {
-              return PageRouteBuilder(
-                settings: settings,
-                pageBuilder: (context, animation, secondaryAnimation) => builder(context),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(milliseconds: 500),
-              );
-            }
-            return null;
-          },
+          routes: AppRoutes.routes,
         ),
       ),
     );

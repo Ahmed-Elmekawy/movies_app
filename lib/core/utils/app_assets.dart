@@ -39,6 +39,7 @@ abstract class AppSVGs {
   static const String passwordIcon = 'assets/icons/Password_Icon.svg';
   static const String nameIcon = 'assets/icons/Name_Icon.svg';
   static const String phoneIcon = 'assets/icons/Phone_Icon.svg';
+  static const String googleIcon = 'assets/icons/icon _google.svg';
 }
 
 abstract class AppAnimations {}

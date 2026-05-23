@@ -11,6 +11,11 @@ class AuthSuccess extends AuthState {
   AuthSuccess(this.userEntity);
 }
 
+class RegisterSuccess extends AuthState {
+  final UserEntity userEntity;
+  RegisterSuccess(this.userEntity);
+}
+
 class AuthFailure extends AuthState {
   final String message;
   AuthFailure(this.message);

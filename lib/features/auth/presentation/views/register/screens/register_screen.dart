@@ -53,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final theme = Theme.of(context);
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
+        if (state is RegisterSuccess) {
           UIUtils.showToast("Registration Successful");
           Navigator.pushNamedAndRemoveUntil(
             context,

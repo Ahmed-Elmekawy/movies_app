@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/app_colors.dart';
+import '../utils/app_assets.dart';
 
 class AppEmptyView extends StatelessWidget {
-  final IconData icon;
-  final String title;
+  final String? imagePath;
+  final String? title;
   final String? subtitle;
-  final Color? iconColor;
-  final double? iconSize;
+  final double? imageSize;
 
   const AppEmptyView({
     super.key,
-    required this.icon,
-    required this.title,
+    this.imagePath,
+    this.title,
     this.subtitle,
-    this.iconColor,
-    this.iconSize,
+    this.imageSize,
   });
 
   @override
@@ -26,17 +25,19 @@ class AppEmptyView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: iconSize ?? 80.sp,
-              color: iconColor ?? AppColors.primary.withValues(alpha: 0.6),
+            Image.asset(
+              imagePath ?? AppImages.empty,
+              width: imageSize ?? 120.w,
+              fit: BoxFit.contain,
             ),
-            24.verticalSpace,
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            if (title != null) ...[
+              24.verticalSpace,
+              Text(
+                title!,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ],
             if (subtitle != null) ...[
               8.verticalSpace,
               Text(

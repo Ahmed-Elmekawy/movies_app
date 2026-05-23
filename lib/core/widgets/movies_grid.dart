@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/widgets/movie_item.dart';
+import 'movie_item.dart';
 
-class SearchResultGrid extends StatelessWidget {
-  const SearchResultGrid({super.key});
+class MoviesGrid extends StatelessWidget {
+  final int itemCount;
+
+  const MoviesGrid({super.key, required this.itemCount});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class SearchResultGrid extends StatelessWidget {
         crossAxisSpacing: 16.w,
         mainAxisSpacing: 16.h,
       ),
-      itemCount: 8,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
         return const MovieItem(rating: '7.7');
       },

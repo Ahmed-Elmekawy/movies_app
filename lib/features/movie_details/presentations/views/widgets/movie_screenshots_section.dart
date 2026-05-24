@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/widgets/custom_network_image.dart';
 
 class MovieScreenshotsSection extends StatelessWidget {
   final List<String> screenshotPaths;
@@ -17,11 +18,10 @@ class MovieScreenshotsSection extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
-            child: Image.asset(
-              screenshotPaths[index],
+            child: CustomNetworkImage(
+              imageUrl: screenshotPaths[index],
               width: double.infinity,
               height: 200.h,
-              fit: BoxFit.cover,
             ),
           ),
         ),

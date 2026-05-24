@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../features/auth/data/data_sources/auth_firebase_data_source.dart';
 import '../../features/auth/data/data_sources/auth_firebase_data_source_impl.dart';
 import '../../features/auth/data/repository_impl/auth_firebase_repository_impl.dart';
@@ -15,6 +15,14 @@ import '../../features/auth/domain/use_cases/sign_in_with_google_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_out_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_up_with_email_and_password_use_case.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
+import '../../features/movie_details/data/data_sources/movie_details_remote_data_source.dart';
+import '../../features/movie_details/data/data_sources/movie_details_remote_data_source_impl.dart';
+import '../../features/movie_details/data/repository_impl/movie_details_repository_impl.dart';
+import '../../features/movie_details/domain/repositories/movie_details_repository.dart';
+import '../../features/movie_details/domain/use_cases/get_movie_details_use_case.dart';
+import '../../features/movie_details/domain/use_cases/get_similar_movies_use_case.dart';
+import '../../features/movie_details/presentations/bloc/movie_details_cubit.dart';
+import '../constants/app_constants.dart';
 import '../utils/cache_helper.dart';
 
 final sl = GetIt.instance;
@@ -51,6 +59,24 @@ Future<void> init() async {
     () => AuthFirebaseDataSourceImpl(sl(), sl(), sl()),
   );
 
+  // Features - Movie Details
+  // Cubit
+  sl.registerFactory(() => MovieDetailsCubit(sl(), sl()));
+
+  // Use cases
+  sl.registerLazySingleton(() => GetMovieDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => GetSimilarMoviesUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<MovieDetailsRepository>(
+    () => MovieDetailsRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<MovieDetailsRemoteDataSource>(
+    () => MovieDetailsRemoteDataSourceImpl(sl()),
+  );
+
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
@@ -58,4 +84,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => GoogleSignIn.instance);
+  sl.registerLazySingleton(
+    () => Dio(
+      BaseOptions(
+        baseUrl: RemoteConstants.baseUrl,
+        receiveDataWhenStatusError: true,
+      ),
+    ),
+  );
 }

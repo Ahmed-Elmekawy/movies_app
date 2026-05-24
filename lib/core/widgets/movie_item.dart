@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/app_assets.dart';
+import 'custom_network_image.dart';
 
 class MovieItem extends StatelessWidget {
   final String imagePath;
@@ -20,9 +21,8 @@ class MovieItem extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            imagePath,
-            fit: BoxFit.cover,
+          CustomNetworkImage(
+            imageUrl: imagePath,
           ),
           Positioned(
             top: 6.h,

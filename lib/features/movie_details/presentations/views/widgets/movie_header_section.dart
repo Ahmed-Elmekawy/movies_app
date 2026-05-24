@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/utils/app_colors.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_network_image.dart';
 
 class MovieHeaderSection extends StatelessWidget {
   final String backdropPath;
@@ -26,8 +27,8 @@ class MovieHeaderSection extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              backdropPath,
+            child: CustomNetworkImage(
+              imageUrl: backdropPath,
               fit: BoxFit.fill,
             ),
           ),
@@ -52,25 +53,29 @@ class MovieHeaderSection extends StatelessWidget {
           // Content
           Column(
             children: [
-              AppBar(
-                leading: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: AppColors.white,
-                    size: 24.sp,
-                  ),
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {},
+              SafeArea(
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: IconButton(
+                    onPressed: () => Navigator.pop(context),
                     icon: Icon(
-                      Icons.bookmark,
+                      Icons.arrow_back_ios_new,
                       color: AppColors.white,
                       size: 24.sp,
                     ),
                   ),
-                ],
+                  actions: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.bookmark,
+                        color: AppColors.white,
+                        size: 24.sp,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const Spacer(flex: 2),
               Container(

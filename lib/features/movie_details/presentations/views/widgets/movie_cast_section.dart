@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/widgets/custom_network_image.dart';
+
 class MovieCastSection extends StatelessWidget {
   final List<Map<String, String>> cast;
 
@@ -22,12 +24,11 @@ class MovieCastSection extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.r),
-                    child: Image.asset(
-                      actor['image'] ?? '',
-                      width: 50.w,
-                      height: 50.h,
-                      fit: BoxFit.cover,
-                    ),
+                    child: CustomNetworkImage(
+                      imageUrl: actor['image']!,
+                      width: 80.w,
+                      height: 80.h,
+                    )
                   ),
                   16.horizontalSpace,
                   Expanded(

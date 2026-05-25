@@ -15,6 +15,13 @@ import '../../features/auth/domain/use_cases/sign_in_with_google_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_out_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_up_with_email_and_password_use_case.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
+import '../../features/home/data/data_sources/home_remote_data_source.dart';
+import '../../features/home/data/data_sources/home_remote_data_source_impl.dart';
+import '../../features/home/data/repository_impl/home_repository_impl.dart';
+import '../../features/home/domain/repositories/home_repository.dart';
+import '../../features/home/domain/use_cases/get_available_now_movies_use_case.dart';
+import '../../features/home/domain/use_cases/get_category_movies_use_case.dart';
+import '../../features/home/presentation/bloc/home_cubit.dart';
 import '../../features/movie_details/data/data_sources/movie_details_remote_data_source.dart';
 import '../../features/movie_details/data/data_sources/movie_details_remote_data_source_impl.dart';
 import '../../features/movie_details/data/repository_impl/movie_details_repository_impl.dart';
@@ -59,6 +66,24 @@ Future<void> init() async {
     () => AuthFirebaseDataSourceImpl(sl(), sl(), sl()),
   );
 
+  // Features - Home
+  // Cubit
+  sl.registerFactory(() => HomeCubit(sl(), sl()));
+
+  // Use cases
+  sl.registerLazySingleton(() => GetAvailableNowMoviesUseCase(sl()));
+  sl.registerLazySingleton(() => GetCategoryMoviesUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(sl()),
+  );
+
   // Features - Movie Details
   // Cubit
   sl.registerFactory(() => MovieDetailsCubit(sl(), sl()));
@@ -87,7 +112,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => Dio(
       BaseOptions(
-        baseUrl: RemoteConstants.baseUrl,
+        baseUrl: ApiConstants.baseUrl,
         receiveDataWhenStatusError: true,
       ),
     ),

@@ -13,7 +13,7 @@ class MovieDetailsRemoteDataSourceImpl implements MovieDetailsRemoteDataSource {
   Future<MovieModel> getMovieDetails(int movieId) async {
     try {
       final response = await _dio.get(
-        RemoteConstants.movieDetails,
+        ApiConstants.movieDetails,
         queryParameters: {
           'movie_id': movieId,
           'with_images': true,
@@ -37,7 +37,7 @@ class MovieDetailsRemoteDataSourceImpl implements MovieDetailsRemoteDataSource {
   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
     try {
       final response = await _dio.get(
-        RemoteConstants.movieSuggestions,
+        ApiConstants.movieSuggestions,
         queryParameters: {
           'movie_id': movieId,
         },

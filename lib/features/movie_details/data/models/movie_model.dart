@@ -128,7 +128,7 @@ class MovieModel {
       largeScreenshotImage2: largeScreenshotImage2 ?? '',
       largeScreenshotImage3: largeScreenshotImage3 ?? '',
       likeCount: likeCount??0,
-      runtime: runtime!,
+      runtime: runtime??0,
     );
   }
 }

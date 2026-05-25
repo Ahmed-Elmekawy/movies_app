@@ -26,9 +26,9 @@ class CastModel {
 
   CastEntity toEntity() {
     return CastEntity(
-      name: name!,
-      characterName: characterName!,
-      profileImage: urlSmallImage!,
+      name: name??'',
+      characterName: characterName??'',
+      profileImage: urlSmallImage??'',
     );
   }
 }

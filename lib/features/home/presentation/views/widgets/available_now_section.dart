@@ -3,23 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/movie_item.dart';
+import '../../../domain/entites/home_movie_entity.dart';
 
 class AvailableNowSection extends StatelessWidget {
+  final List<HomeMovieEntity> movies;
   final ValueChanged<int>? onPageChanged;
 
   const AvailableNowSection({
     super.key,
+    required this.movies,
     this.onPageChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    final images = [
-      AppImages.screenshot1,
-      AppImages.screenshot2,
-      AppImages.screenshot3,
-    ];
-
     return Column(
       children: [
         Image.asset(
@@ -30,11 +27,12 @@ class AvailableNowSection extends StatelessWidget {
         ),
         20.verticalSpace,
         CarouselSlider.builder(
-          itemCount: images.length,
+          itemCount: movies.length,
           itemBuilder: (context, index, realIndex) {
             return MovieItem(
-              imagePath: images[index],
-              rating: '7.7',
+              movieId: movies[index].id,
+              imagePath: movies[index].mediumCoverImage,
+              rating: movies[index].rating.toString(),
             );
           },
           options: CarouselOptions(

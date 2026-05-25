@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../domain/entites/home_movie_entity.dart';
 import '../../../../../core/widgets/movie_item.dart';
 
 class MovieCategorySection extends StatelessWidget {
   final String title;
+  final List<HomeMovieEntity> movies;
   final VoidCallback? onSeeMore;
 
   const MovieCategorySection({
     super.key,
     required this.title,
+    required this.movies,
     this.onSeeMore,
   });
 
@@ -57,13 +59,15 @@ class MovieCategorySection extends StatelessWidget {
           child: ListView.separated(
             padding: REdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
+            itemCount: movies.length,
             separatorBuilder: (context, index) => 12.horizontalSpace,
             itemBuilder: (context, index) {
               return SizedBox(
                 width: 150.w,
-                child: const MovieItem(
-                  rating: '7.7',
+                child: MovieItem(
+                  movieId: movies[index].id,
+                  imagePath: movies[index].mediumCoverImage,
+                  rating: movies[index].rating.toString(),
                 ),
               );
             },

@@ -12,12 +12,42 @@ abstract class AppConstants {
     AppImages.avatar8,
     AppImages.avatar9,
   ];
+
+  static const List<String> genres = [
+    'Action',
+    'War',
+    'Adventure',
+    'Animation',
+    'Anime',
+    'Comedy',
+    'Crime',
+    'Documentary',
+    'Drama',
+    'Family',
+    'Fantasy',
+    'Game Show',
+    'Horror',
+    'History',
+    'Language',
+    'Lifestyle',
+    'Music',
+    'Musical',
+    'Mystery',
+    'Reality TV',
+    'Romance',
+    'Sci-Fi',
+    'Seasonal',
+    'Sport',
+    'Thriller',
+    'Western',
+  ];
 }
 
-abstract class RemoteConstants {
+abstract class ApiConstants {
   static const String baseUrl = 'https://movies-api.accel.li/api/v2/';
   static const String movieDetails = 'movie_details.json';
   static const String movieSuggestions = 'movie_suggestions.json';
+  static const String listMovies = 'list_movies.json';
 }
 
 abstract class CacheConstants {

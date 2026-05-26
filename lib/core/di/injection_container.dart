@@ -15,6 +15,12 @@ import '../../features/auth/domain/use_cases/sign_in_with_google_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_out_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_up_with_email_and_password_use_case.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
+import '../../features/explore/data/data_sources/explore_remote_data_source.dart';
+import '../../features/explore/data/data_sources/explore_remote_data_source_impl.dart';
+import '../../features/explore/data/repository_impl/explore_repository_impl.dart';
+import '../../features/explore/domain/repositories/explore_repository.dart';
+import '../../features/explore/domain/use_cases/get_movies_by_genre_use_case.dart';
+import '../../features/explore/presentation/bloc/explore_cubit.dart';
 import '../../features/home/data/data_sources/home_remote_data_source.dart';
 import '../../features/home/data/data_sources/home_remote_data_source_impl.dart';
 import '../../features/home/data/repository_impl/home_repository_impl.dart';
@@ -123,6 +129,23 @@ Future<void> init() async {
   // Data sources
   sl.registerLazySingleton<SearchRemoteDataSource>(
     () => SearchRemoteDataSourceImpl(sl()),
+  );
+
+  // Features - Explore
+  // Cubit
+  sl.registerFactory(() => ExploreCubit(sl()));
+
+  // Use cases
+  sl.registerLazySingleton(() => GetMoviesByGenreUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<ExploreRepository>(
+    () => ExploreRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<ExploreRemoteDataSource>(
+    () => ExploreRemoteDataSourceImpl(sl()),
   );
 
   // External

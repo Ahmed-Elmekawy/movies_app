@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/widgets/movie_item.dart';
 import '../../../../../core/widgets/movies_grid.dart';
 import '../widgets/genre_selector.dart';
 
@@ -40,9 +41,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 },
               ),
               20.verticalSpace,
-              const Expanded(
+              Expanded(
                 child: MoviesGrid(
                   itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return const MovieItem(
+                      rating: '7.7',
+                      imagePath: 'assets/images/movie_poster.jpg',
+                    );
+                  },
                 ),
               ),
             ],

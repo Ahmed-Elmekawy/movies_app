@@ -4,13 +4,21 @@ import 'movie_item.dart';
 
 class MoviesGrid extends StatelessWidget {
   final int itemCount;
+  final Widget? Function(BuildContext, int) itemBuilder;
+  final ScrollController? controller;
 
-  const MoviesGrid({super.key, required this.itemCount});
+  const MoviesGrid({
+    super.key,
+    required this.itemCount,
+    required this.itemBuilder,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      padding: REdgeInsets.only(bottom: 100),
+      controller: controller,
+      padding: REdgeInsets.only(bottom: 20),
       physics: const BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -19,9 +27,7 @@ class MoviesGrid extends StatelessWidget {
         mainAxisSpacing: 16.h,
       ),
       itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return const MovieItem(rating: '7.7');
-      },
+      itemBuilder: itemBuilder,
     );
   }
 }

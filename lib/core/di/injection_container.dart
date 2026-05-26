@@ -29,6 +29,12 @@ import '../../features/movie_details/domain/repositories/movie_details_repositor
 import '../../features/movie_details/domain/use_cases/get_movie_details_use_case.dart';
 import '../../features/movie_details/domain/use_cases/get_similar_movies_use_case.dart';
 import '../../features/movie_details/presentations/bloc/movie_details_cubit.dart';
+import '../../features/search/data/data_sources/search_remote_data_source.dart';
+import '../../features/search/data/data_sources/search_remote_data_source_impl.dart';
+import '../../features/search/data/repository_impl/search_repository_impl.dart';
+import '../../features/search/domain/repositories/search_repository.dart';
+import '../../features/search/domain/use_cases/get_search_movies_use_case.dart';
+import '../../features/search/presentation/bloc/search_cubit.dart';
 import '../constants/app_constants.dart';
 import '../utils/cache_helper.dart';
 
@@ -100,6 +106,23 @@ Future<void> init() async {
   // Data sources
   sl.registerLazySingleton<MovieDetailsRemoteDataSource>(
     () => MovieDetailsRemoteDataSourceImpl(sl()),
+  );
+
+  // Features - Search
+  // Cubit
+  sl.registerFactory(() => SearchCubit(sl()));
+
+  // Use cases
+  sl.registerLazySingleton(() => GetSearchMoviesUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<SearchRepository>(
+    () => SearchRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<SearchRemoteDataSource>(
+    () => SearchRemoteDataSourceImpl(sl()),
   );
 
   // External

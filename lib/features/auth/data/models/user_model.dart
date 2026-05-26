@@ -1,6 +1,5 @@
-import 'package:movies_app/core/utils/app_assets.dart';
-
 import '../../domain/entities/user_entity.dart';
+import 'movie_model.dart';
 
 class UserModel {
   final String id;
@@ -8,8 +7,9 @@ class UserModel {
   final String phone;
   final String email;
   final String avatar;
-  final List<int> watchList;
-  final List<int> history;
+  final List<MovieModel> watchList;
+  final List<MovieModel> history;
+  final int wishlist;
 
   UserModel({
     required this.id,
@@ -19,6 +19,7 @@ class UserModel {
     this.avatar = 'avatar1',
     required this.watchList,
     required this.history,
+    this.wishlist = 0,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -28,8 +29,9 @@ class UserModel {
       phone: json['phone'] as String,
       email: json['email'] as String,
       avatar: json['avatar'] as String,
-      watchList: List<int>.from(json['watch_list'] ?? []),
-      history: List<int>.from(json['history'] ?? []),
+      watchList: List<MovieModel>.from(json['watch_list'] ?? []),
+      history: List<MovieModel>.from(json['history'] ?? []),
+      wishlist: json['wishlist'] as int,
     );
   }
 
@@ -42,6 +44,7 @@ class UserModel {
       'avatar': avatar,
       'watch_list': watchList,
       'history': history,
+      'wishlist': wishlist,
     };
   }
 
@@ -51,8 +54,9 @@ class UserModel {
       phone: phone,
       email: email,
       avatar: avatar,
-      watchList: watchList,
-      history: history,
+      watchList: watchList.map((movie) => movie.toEntity()).toList(),
+      history: history.map((movie) => movie.toEntity()).toList(),
+      wishlist: wishlist,
     );
   }
 }

@@ -1,10 +1,14 @@
+import 'movie_entity.dart';
+
 class UserEntity {
   final String name;
   final String phone;
   final String email;
   final String avatar;
-  final List<int> watchList;
-  final List<int> history;
+  final List<MovieEntity> watchList;
+  final List<MovieEntity> history;
+  final int wishlist;
+
 
   UserEntity({
     required this.name,
@@ -13,5 +17,6 @@ class UserEntity {
     required this.avatar,
     required this.watchList,
     required this.history,
+    required this.wishlist,
   });
 }

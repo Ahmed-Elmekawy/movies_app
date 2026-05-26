@@ -19,15 +19,17 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   @override
   Future<UserModel> signInWithGoogle() async {
     try {
-      _googleSignIn.initialize(serverClientId: "570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com");
+      _googleSignIn.initialize(
+          serverClientId:
+              "570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com");
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _firebaseAuth
-          .signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user == null) {
@@ -135,7 +137,6 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   Future<void> signOut() async {
     try {
       await _googleSignIn.signOut();
-
       await _firebaseAuth.signOut();
     } catch (e) {
       throw RemoteException('An error occurred during sign-out: $e');
@@ -171,33 +172,82 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   Future<void> _addToFireStore(UserModel user) async {
     await _firestore.collection('users').doc(user.id).set(user.toJson());
   }
-}
 
-String _handleAuthException(FirebaseAuthException e) {
-  switch (e.code) {
-    case 'network-request-failed':
-      return 'Network error, Please check your connection.';
-    case 'user-not-found':
-      return 'No user found for that email.';
-    case 'wrong-password':
-      return 'Wrong password provided for that user.';
-    case 'email-already-in-use':
-      return 'The account already exists for that email.';
-    case 'invalid-email':
-      return 'The email address is badly formatted.';
-    case 'weak-password':
-      return 'The password provided is too weak.';
-    case 'user-disabled':
-      return 'This user has been disabled.';
-    case 'too-many-requests':
-      return 'Too many requests. Try again later.';
-    case 'operation-not-allowed':
-      return 'This operation is not allowed.';
-    case 'invalid-credential':
-      return 'Invalid credentials, please try again.';
-    case 'account-exists-with-different-credential':
-      return 'An account already exists with the same email address but different sign-in credentials.';
-    default:
-      return e.message ?? 'Authentication error occurred.';
+  Future<UserCredential> _reAuthWithCredential(
+      AuthCredential credential) async {
+    try {
+      final User? user = _firebaseAuth.currentUser;
+      if (user == null) throw RemoteException('No user logged in');
+      
+      return await user.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw RemoteException(_handleAuthException(e));
+    } catch (e) {
+      throw RemoteException('An error occurred during re-authentication: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) return;
+
+      final uid = user.uid;
+
+      // 1. Delete user data from Firestore
+      await _firestore.collection('users').doc(uid).delete();
+
+      // 2. Delete the user from Firebase Auth
+      // If this fails with 'requires-recent-login', the catch block handles it
+      await user.delete();
+
+      // 3. Clean up local sign-in state
+      await _googleSignIn.signOut();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw RemoteException(
+            'Sensitive operation. Please re-authenticate before deleting your account.');
+      }
+      throw RemoteException(_handleAuthException(e));
+    } catch (e) {
+      throw RemoteException('An error occurred during account deletion: $e');
+    }
+  }
+
+  @override
+  Future<void> resetPassword() async {
+     // Implementation depends on requirements
+  }
+
+  String _handleAuthException(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'network-request-failed':
+        return 'Network error, Please check your connection.';
+      case 'user-not-found':
+        return 'No user found for that email.';
+      case 'wrong-password':
+        return 'Wrong password provided for that user.';
+      case 'email-already-in-use':
+        return 'The account already exists for that email.';
+      case 'invalid-email':
+        return 'The email address is badly formatted.';
+      case 'weak-password':
+        return 'The password provided is too weak.';
+      case 'user-disabled':
+        return 'This user has been disabled.';
+      case 'too-many-requests':
+        return 'Too many requests. Try again later.';
+      case 'operation-not-allowed':
+        return 'This operation is not allowed.';
+      case 'invalid-credential':
+        return 'Invalid credentials, please try again.';
+      case 'account-exists-with-different-credential':
+        return 'An account already exists with the same email address but different sign-in credentials.';
+      case 'requires-recent-login':
+        return 'This action requires recent authentication. Please log in again.';
+      default:
+        return e.message ?? 'Authentication error occurred.';
+    }
   }
 }

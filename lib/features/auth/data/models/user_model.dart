@@ -9,29 +9,30 @@ class UserModel {
   final String avatar;
   final List<MovieModel> watchList;
   final List<MovieModel> history;
-  final int wishlist;
 
   UserModel({
     required this.id,
     required this.name,
     required this.phone,
     required this.email,
-    this.avatar = 'avatar1',
+    required this.avatar,
     required this.watchList,
     required this.history,
-    this.wishlist = 0,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      phone: json['phone'] as String,
-      email: json['email'] as String,
-      avatar: json['avatar'] as String,
-      watchList: List<MovieModel>.from(json['watch_list'] ?? []),
-      history: List<MovieModel>.from(json['history'] ?? []),
-      wishlist: json['wishlist'] as int,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      avatar: json['avatar'] as String? ?? 'avatar1',
+      watchList: (json['watch_list'] as List? ?? [])
+          .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      history: (json['history'] as List? ?? [])
+          .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -42,9 +43,8 @@ class UserModel {
       'phone': phone,
       'email': email,
       'avatar': avatar,
-      'watch_list': watchList,
-      'history': history,
-      'wishlist': wishlist,
+      'watch_list': watchList.map((movie) => movie.toJson()).toList(),
+      'history': history.map((movie) => movie.toJson()).toList(),
     };
   }
 
@@ -56,7 +56,6 @@ class UserModel {
       avatar: avatar,
       watchList: watchList.map((movie) => movie.toEntity()).toList(),
       history: history.map((movie) => movie.toEntity()).toList(),
-      wishlist: wishlist,
     );
   }
 }

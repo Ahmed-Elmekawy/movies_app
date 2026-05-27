@@ -42,9 +42,9 @@ class SearchResultsView extends StatelessWidget {
             if (index < state.movies.length) {
               final movie = state.movies[index];
               return MovieItem(
-                movieId: movie.id,
-                rating: movie.rating.toString(),
                 imagePath: movie.mediumCoverImage,
+                rating: movie.rating,
+                movieId: movie.id,
               );
             }
             return const Center(

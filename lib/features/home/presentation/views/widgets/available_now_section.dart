@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/movie_item.dart';
-import '../../../domain/entites/home_movie_entity.dart';
+import '../../../domain/entites/home_movie_entity.dart' as home;
 
 class AvailableNowSection extends StatelessWidget {
-  final List<HomeMovieEntity> movies;
+  final List<home.HomeMovieEntity> movies;
   final ValueChanged<int>? onPageChanged;
 
   const AvailableNowSection({
@@ -29,10 +29,11 @@ class AvailableNowSection extends StatelessWidget {
         CarouselSlider.builder(
           itemCount: movies.length,
           itemBuilder: (context, index, realIndex) {
+            final movie = movies[index];
             return MovieItem(
-              movieId: movies[index].id,
-              imagePath: movies[index].mediumCoverImage,
-              rating: movies[index].rating.toString(),
+              imagePath: movie.mediumCoverImage,
+              rating: movie.rating,
+              movieId: movie.id,
             );
           },
           options: CarouselOptions(

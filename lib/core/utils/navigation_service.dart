@@ -37,11 +37,4 @@ class NavigationService {
   static void goBack(BuildContext context, {dynamic result}) {
     Navigator.pop(context, result);
   }
-
-  static Future<T?> pushWidget<T>(BuildContext context, Widget widget) {
-    return Navigator.push<T>(
-      context,
-      MaterialPageRoute(builder: (_) => widget),
-    );
-  }
 }

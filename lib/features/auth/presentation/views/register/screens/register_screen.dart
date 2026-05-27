@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/constants/app_constants.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
@@ -26,18 +27,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   final _phoneController = TextEditingController();
 
-  final List<String> avatars = [
-    'avatar1',
-    'avatar2',
-    'avatar3',
-    'avatar4',
-    'avatar5',
-    'avatar6',
-    'avatar7',
-    'avatar8',
-    'avatar9',
-  ];
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -51,6 +40,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final avatarKeys = AppConstants.avatarKeys;
+    
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
@@ -115,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               email: _emailController.text.trim(),
                               password: _passwordController.text,
                               phone: _phoneController.text.trim(),
-                              avatar: avatars[_selectedAvatarIndex],
+                              avatar: avatarKeys[_selectedAvatarIndex],
                             );
                       }
                     },

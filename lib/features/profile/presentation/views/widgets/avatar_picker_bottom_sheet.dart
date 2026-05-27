@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/app_constants.dart';
-import '../../../../../core/utils/app_assets.dart';
 
 class AvatarPickerBottomSheet extends StatefulWidget {
-  final String selectedAvatar;
+  final String selectedAvatarKey;
   final ValueChanged<String> onAvatarSelected;
 
   const AvatarPickerBottomSheet({
     super.key,
-    required this.selectedAvatar,
+    required this.selectedAvatarKey,
     required this.onAvatarSelected,
   });
 
   static Future<String?> show(
     BuildContext context, {
-    required String currentAvatar,
+    required String currentAvatarKey,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     return showModalBottomSheet<String>(
@@ -25,9 +24,9 @@ class AvatarPickerBottomSheet extends StatefulWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
-      builder: (ctx) => AvatarPickerBottomSheet(
-        selectedAvatar: currentAvatar,
-        onAvatarSelected: (avatar) => Navigator.of(ctx).pop(avatar),
+      builder: (context) => AvatarPickerBottomSheet(
+        selectedAvatarKey: currentAvatarKey,
+        onAvatarSelected: (key) => Navigator.of(context).pop(key),
       ),
     );
   }
@@ -38,17 +37,18 @@ class AvatarPickerBottomSheet extends StatefulWidget {
 }
 
 class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
-  late String _selected;
+  late String _selectedKey;
 
   @override
   void initState() {
     super.initState();
-    _selected = widget.selectedAvatar;
+    _selectedKey = widget.selectedAvatarKey;
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final keys = AppConstants.avatarKeys;
 
     return SafeArea(
       child: Padding(
@@ -74,14 +74,15 @@ class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
                 crossAxisSpacing: 12.w,
                 mainAxisSpacing: 12.h,
               ),
-              itemCount: AppConstants.avatars.length,
+              itemCount: keys.length,
               itemBuilder: (_, index) {
-                final avatar = AppConstants.avatars[index];
-                final isSelected = avatar == _selected;
+                final key = keys[index];
+                final avatarPath = AppConstants.getAvatarPath(key);
+                final isSelected = key == _selectedKey;
                 return GestureDetector(
                   onTap: () {
-                    setState(() => _selected = avatar);
-                    widget.onAvatarSelected(avatar);
+                    setState(() => _selectedKey = key);
+                    widget.onAvatarSelected(key);
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -99,7 +100,7 @@ class _AvatarPickerBottomSheetState extends State<AvatarPickerBottomSheet> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14.r),
-                      child: Image.asset(avatar, fit: BoxFit.cover),
+                      child: Image.asset(avatarPath, fit: BoxFit.cover),
                     ),
                   ),
                 );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
+import 'package:movies_app/features/profile/presentation/bloc/profile_cubit.dart';
 import 'package:movies_app/firebase_options.dart';
 import 'core/config/theme/app_theme.dart';
 import 'core/di/injection_container.dart' as di;
@@ -26,8 +27,11 @@ class MoviesApp extends StatelessWidget {
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, __) => BlocProvider(
-        create: (context) => di.sl<AuthCubit>(),
+      builder: (_, __) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => di.sl<AuthCubit>()),
+          BlocProvider(create: (context) => di.sl<ProfileCubit>()),
+        ],
         child: MaterialApp(
           title: 'Movies App',
           debugShowCheckedModeBanner: false,

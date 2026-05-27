@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/di/injection_container.dart';
+import '../../../../../core/utils/ui_utils.dart';
 import '../../../../../core/widgets/error_view.dart';
+import '../../../../auth/domain/entities/movie_entity.dart';
+import '../../../../auth/presentation/bloc/auth_cubit.dart';
+import '../../../../profile/presentation/bloc/profile_cubit.dart';
+import '../../../../profile/presentation/bloc/profile_state.dart';
 import '../../bloc/movie_details_cubit.dart';
 import '../../bloc/movie_details_state.dart';
 import '../widgets/movie_header_section.dart';
@@ -28,83 +33,102 @@ class MovieDetailsScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is MovieDetailsSuccess) {
               final movie = state.movie;
-              return SafeArea(
-                child: Column(
-                  children: [
-                    MovieHeaderSection(
-                      backdropPath: movie.mediumCoverImage,
-                      title: movie.title,
-                      year: movie.year,
-                      onWatchPressed: () {},
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        padding: REdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MovieRatingsSection(
-                              likes: movie.likeCount,
-                              views:movie.runtime,
-                              rating: movie.rating,
-                            ),
-                            16.verticalSpace,
-                            _Section(
-                              title: 'Screen Shots',
-                              child: MovieScreenshotsSection(
-                                screenshotPaths: [
-                                  movie.largeScreenshotImage1,
-                                  movie.largeScreenshotImage2,
-                                  movie.largeScreenshotImage3,
-                                ],
+              return BlocListener<ProfileCubit, ProfileState>(
+                listener: (context, profileState) {
+                  if (profileState is AddToWatchListSuccess) {
+                    context.read<AuthCubit>().checkAuthStatus();
+                    UIUtils.showToast('Added to watch list');
+                  } else if (profileState is AddToWatchListFailure) {
+                    UIUtils.showToast(profileState.message, isError: true);
+                  } else if (profileState is AddToHistoryFailure) {
+                    UIUtils.showToast(profileState.message, isError: true);
+                  }
+                },
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      MovieHeaderSection(
+                        backdropPath: movie.mediumCoverImage,
+                        title: movie.title,
+                        year: movie.year,
+                        onWatchPressed: () {
+                          final movieEntity = MovieEntity(
+                            id: movie.id,
+                            rating: movie.rating,
+                            mediumCoverImage: movie.mediumCoverImage,
+                          );
+                          context.read<ProfileCubit>().addToWatchList(
+                            movieEntity,
+                          );
+                          context.read<ProfileCubit>().addToHistory(
+                            movieEntity,
+                          );
+                        },
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: REdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MovieRatingsSection(
+                                likes: movie.likeCount,
+                                views: movie.runtime,
+                                rating: movie.rating,
                               ),
-                            ),
-                            if (state.similarMovies.isNotEmpty)...[
-                            16.verticalSpace,
-                            _Section(
-                              title: 'Similar',
-                              child: MovieSimilarSection(
-                                moviePosterPaths: state.similarMovies
-                                    .map((m) => m.mediumCoverImage)
-                                    .toList(),
-                                movieRatings: state.similarMovies
-                                    .map((m) => m.rating)
-                                    .toList(),
+                              16.verticalSpace,
+                              _Section(
+                                title: 'Screen Shots',
+                                child: MovieScreenshotsSection(
+                                  screenshotPaths: [
+                                    movie.largeScreenshotImage1,
+                                    movie.largeScreenshotImage2,
+                                    movie.largeScreenshotImage3,
+                                  ],
+                                ),
                               ),
-                            ),
+                              if (state.similarMovies.isNotEmpty) ...[
+                                16.verticalSpace,
+                                _Section(
+                                  title: 'Similar',
+                                  child: MovieSimilarSection(
+                                    similarMovies: state.similarMovies,
+                                  ),
+                                ),
+                              ],
+                              16.verticalSpace,
+                              _Section(
+                                title: 'Summary',
+                                child: MovieSummarySection(
+                                  summary: movie.description,
+                                ),
+                              ),
+                              16.verticalSpace,
+                              _Section(
+                                title: 'Cast',
+                                child: MovieCastSection(
+                                  cast: movie.cast
+                                      .map(
+                                        (e) => {
+                                          'name': e.name,
+                                          'character': e.characterName,
+                                          'image': e.profileImage,
+                                        },
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                              16.verticalSpace,
+                              _Section(
+                                title: 'Genres',
+                                child: MovieGenresSection(genres: movie.genres),
+                              ),
                             ],
-                            16.verticalSpace,
-                            _Section(
-                              title: 'Summary',
-                              child: MovieSummarySection(
-                                summary: movie.description,
-                              ),
-                            ),
-                            16.verticalSpace,
-                            _Section(
-                              title: 'Cast',
-                              child: MovieCastSection(
-                                cast: movie.cast
-                                    .map(
-                                      (e) => {
-                                        'name': e.name,
-                                        'character': e.characterName,
-                                        'image': e.profileImage,
-                                      },
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                            16.verticalSpace,
-                            _Section(
-                              title: 'Genres',
-                              child: MovieGenresSection(genres: movie.genres),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             } else if (state is MovieDetailsFailure) {

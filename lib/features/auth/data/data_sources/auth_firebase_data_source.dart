@@ -13,6 +13,6 @@ abstract class AuthFirebaseDataSource {
   Future<void> sendPasswordResetEmail(String email);
   Future<void> signOut();
   Future<UserModel?> checkAuthStatus();
-  Future<void> deleteAccount();
-  Future<void> resetPassword();
+  Future<void> deleteAccount(String password);
+  Future<void> updatePassword({required String oldPassword, required String newPassword});
 }

@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../domain/entities/movie_entity.dart' as detail;
 import '../../../../../core/widgets/movie_item.dart';
 
 class MovieSimilarSection extends StatelessWidget {
-  final List<String> moviePosterPaths;
-  final List<double> movieRatings;
+  final List<detail.MovieEntity> similarMovies;
 
-  const MovieSimilarSection({
-    super.key,
-    required this.moviePosterPaths,
-    required this.movieRatings,
-  });
+  const MovieSimilarSection({super.key, required this.similarMovies});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +19,15 @@ class MovieSimilarSection extends StatelessWidget {
         mainAxisSpacing: 16.h,
         childAspectRatio: 140 / 200,
       ),
-      itemCount: moviePosterPaths.length,
-      itemBuilder: (context, index) => MovieItem(
-        imagePath: moviePosterPaths[index],
-        rating: movieRatings[index].toString(),
-      ),
+      itemCount: similarMovies.length,
+      itemBuilder: (context, index) {
+        final movie = similarMovies[index];
+        return MovieItem(
+          imagePath: movie.mediumCoverImage,
+          rating: movie.rating,
+          movieId: movie.id,
+        );
+      },
     );
   }
 }

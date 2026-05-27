@@ -117,6 +117,7 @@ class MovieModel {
   }
   MovieEntity toEntity() {
     return MovieEntity(
+      id: id!,
       title: title ?? '',
       year: year ?? 0,
       rating: rating ?? 0.0,

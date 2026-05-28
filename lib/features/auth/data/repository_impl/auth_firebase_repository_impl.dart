@@ -82,4 +82,30 @@ class AuthFirebaseRepositoryImpl implements AuthFirebaseRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount(String password) async {
+    try {
+      await _authFirebaseDataSource.deleteAccount(password);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      await _authFirebaseDataSource.updatePassword(
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      );
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

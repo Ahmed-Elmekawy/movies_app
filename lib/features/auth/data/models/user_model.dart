@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/user_entity.dart';
 import 'movie_model.dart';
 
@@ -9,42 +10,42 @@ class UserModel {
   final String avatar;
   final List<MovieModel> watchList;
   final List<MovieModel> history;
-  final int wishlist;
 
   UserModel({
     required this.id,
     required this.name,
     required this.phone,
     required this.email,
-    this.avatar = 'avatar1',
+    required this.avatar,
     required this.watchList,
     required this.history,
-    this.wishlist = 0,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      phone: json['phone'] as String,
-      email: json['email'] as String,
-      avatar: json['avatar'] as String,
-      watchList: List<MovieModel>.from(json['watch_list'] ?? []),
-      history: List<MovieModel>.from(json['history'] ?? []),
-      wishlist: json['wishlist'] as int,
+      id: json[FirebaseConstants.id] as String? ?? '',
+      name: json[FirebaseConstants.name] as String? ?? '',
+      phone: json[FirebaseConstants.phone] as String? ?? '',
+      email: json[FirebaseConstants.email] as String? ?? '',
+      avatar: json[FirebaseConstants.avatar] as String? ?? 'avatar1',
+      watchList: (json[FirebaseConstants.watchList] as List? ?? [])
+          .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      history: (json[FirebaseConstants.history] as List? ?? [])
+          .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'phone': phone,
-      'email': email,
-      'avatar': avatar,
-      'watch_list': watchList,
-      'history': history,
-      'wishlist': wishlist,
+      FirebaseConstants.id: id,
+      FirebaseConstants.name: name,
+      FirebaseConstants.phone: phone,
+      FirebaseConstants.email: email,
+      FirebaseConstants.avatar: avatar,
+      FirebaseConstants.watchList: watchList.map((movie) => movie.toJson()).toList(),
+      FirebaseConstants.history: history.map((movie) => movie.toJson()).toList(),
     };
   }
 
@@ -56,7 +57,6 @@ class UserModel {
       avatar: avatar,
       watchList: watchList.map((movie) => movie.toEntity()).toList(),
       history: history.map((movie) => movie.toEntity()).toList(),
-      wishlist: wishlist,
     );
   }
 }

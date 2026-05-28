@@ -10,11 +10,13 @@ import '../../features/auth/data/data_sources/auth_firebase_data_source_impl.dar
 import '../../features/auth/data/repository_impl/auth_firebase_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_firebase_repository.dart';
 import '../../features/auth/domain/use_cases/check_auth_status_use_case.dart';
+import '../../features/auth/domain/use_cases/delete_account_use_case.dart';
 import '../../features/auth/domain/use_cases/send_password_reset_email_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_in_with_google_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_out_use_case.dart';
 import '../../features/auth/domain/use_cases/sign_up_with_email_and_password_use_case.dart';
+import '../../features/auth/domain/use_cases/update_password_use_case.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
 import '../../features/explore/data/data_sources/explore_remote_data_source.dart';
 import '../../features/explore/data/data_sources/explore_remote_data_source_impl.dart';
@@ -36,6 +38,14 @@ import '../../features/movie_details/domain/repositories/movie_details_repositor
 import '../../features/movie_details/domain/use_cases/get_movie_details_use_case.dart';
 import '../../features/movie_details/domain/use_cases/get_similar_movies_use_case.dart';
 import '../../features/movie_details/presentations/bloc/movie_details_cubit.dart';
+import '../../features/profile/data/data_sources/profile_remote_data_source.dart';
+import '../../features/profile/data/data_sources/profile_remote_data_source_impl.dart';
+import '../../features/profile/data/repository_impl/profile_repository_impl.dart';
+import '../../features/profile/domain/repositories/profile_repository.dart';
+import '../../features/profile/domain/use_cases/add_to_history_use_case.dart';
+import '../../features/profile/domain/use_cases/add_to_watchlist_use_case.dart';
+import '../../features/profile/domain/use_cases/update_profile_use_case.dart';
+import '../../features/profile/presentation/bloc/profile_cubit.dart';
 import '../../features/search/data/data_sources/search_remote_data_source.dart';
 import '../../features/search/data/data_sources/search_remote_data_source_impl.dart';
 import '../../features/search/data/repository_impl/search_repository_impl.dart';
@@ -58,6 +68,8 @@ Future<void> init() async {
       sl(),
       sl(),
       sl(),
+      sl(),
+      sl(),
     ),
   );
 
@@ -68,6 +80,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SendPasswordResetEmailUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
   sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteAccountUseCase(sl()));
+  sl.registerLazySingleton(() => UpdatePasswordUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<AuthFirebaseRepository>(
@@ -77,6 +91,25 @@ Future<void> init() async {
   // Data sources
   sl.registerLazySingleton<AuthFirebaseDataSource>(
     () => AuthFirebaseDataSourceImpl(sl(), sl(), sl()),
+  );
+
+  // Features - Profile
+  // Cubit
+  sl.registerFactory(() => ProfileCubit(sl(), sl(), sl()));
+
+  // Use cases
+  sl.registerLazySingleton(() => UpdateProfileUseCase(sl()));
+  sl.registerLazySingleton(() => AddToWatchListUseCase(sl()));
+  sl.registerLazySingleton(() => AddToHistoryUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(sl(), sl()),
   );
 
   // Features - Home

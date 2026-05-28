@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomButton extends StatelessWidget {
   final String txtButton;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final double? width;
@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.txtButton,
-    required this.onPressed,
+    this.onPressed,
     this.backgroundColor,
     this.foregroundColor,
     this.width,

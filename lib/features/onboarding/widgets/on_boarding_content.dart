@@ -89,7 +89,7 @@ class _Description extends StatelessWidget {
       description,
       textAlign: TextAlign.center,
       style: theme.textTheme.bodyLarge?.copyWith(
-        color: theme.textTheme.bodyLarge?.color?.withOpacity(0.8),
+        color: theme.textTheme.bodyLarge?.color?.withValues(alpha: 0.8),
         fontSize: 16.sp,
         height: 1.4,
       ),

@@ -1,6 +1,7 @@
 import 'cast_entity.dart';
 
 class MovieEntity {
+  final int id;
   final String title;
   final int year;
   final double rating;
@@ -15,6 +16,7 @@ class MovieEntity {
   final List<CastEntity> cast;
 
   MovieEntity({
+    required this.id,
     required this.title,
     required this.year,
     required this.rating,

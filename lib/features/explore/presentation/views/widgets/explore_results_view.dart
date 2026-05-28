@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/widgets/error_view.dart';
 import '../../../../../core/widgets/movie_item.dart';
 import '../../../../../core/widgets/movies_grid.dart';
 import '../../bloc/explore_cubit.dart';
@@ -19,7 +20,12 @@ class ExploreResultsView extends StatelessWidget {
         }
 
         if (state is ExploreFailure) {
-          return Center(child: Text(state.message));
+          return AppErrorView(
+            message: state.message,
+            onRetry: () => context.read<ExploreCubit>().getMoviesByGenre(
+                  context.read<ExploreCubit>().currentGenre,
+                ),
+          );
         }
 
         if (state.movies.isEmpty && state is! ExploreInitial) {
@@ -38,9 +44,9 @@ class ExploreResultsView extends StatelessWidget {
             if (index < state.movies.length) {
               final movie = state.movies[index];
               return MovieItem(
-                movieId: movie.id,
-                rating: movie.rating.toString(),
                 imagePath: movie.mediumCoverImage,
+                rating: movie.rating,
+                movieId: movie.id,
               );
             }
             return const Center(

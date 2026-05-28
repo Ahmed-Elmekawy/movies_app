@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/app_constants.dart';
-import '../../../../../../core/utils/app_assets.dart';
 import '../../../../../../core/utils/app_colors.dart';
 
 class AvatarCarousel extends StatelessWidget {
@@ -17,14 +16,16 @@ class AvatarCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final avatarKeys = AppConstants.avatarKeys;
+    
     return Column(
       children: [
         CarouselSlider.builder(
-          itemCount: AppConstants.avatars.length,
+          itemCount: avatarKeys.length,
           itemBuilder: (context, index, realIndex) {
             final isSelected = index == selectedAvatarIndex;
             return _buildAvatarItem(
-              index,
+              avatarKeys[index],
               isSelected: isSelected,
             );
           },
@@ -55,7 +56,7 @@ class AvatarCarousel extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatarItem(int index, {required bool isSelected}) {
+  Widget _buildAvatarItem(String avatarKey, {required bool isSelected}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.symmetric(vertical: isSelected ? 0 : 20.h),
@@ -64,7 +65,7 @@ class AvatarCarousel extends StatelessWidget {
         color: const Color(0xFFB1D8FF).withValues(alpha: isSelected ? 1.0 : 0.5),
       ),
       child: Image.asset(
-        AppConstants.avatars[index],
+        AppConstants.getAvatarPath(avatarKey),
         fit: BoxFit.contain,
       ),
     );

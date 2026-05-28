@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/empty_view.dart';
+import '../../../../../core/widgets/error_view.dart';
 import '../../../../../core/widgets/movie_item.dart';
 import '../../../../../core/widgets/movies_grid.dart';
 import '../../bloc/search_cubit.dart';
@@ -10,10 +11,7 @@ import '../../bloc/search_state.dart';
 class SearchResultsView extends StatelessWidget {
   final ScrollController scrollController;
 
-  const SearchResultsView({
-    super.key,
-    required this.scrollController,
-  });
+  const SearchResultsView({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,10 @@ class SearchResultsView extends StatelessWidget {
         }
 
         if (state is SearchFailure && state.movies.isEmpty) {
-          return Center(child: Text(state.message));
+          return AppErrorView(
+            message: state.message,
+            onRetry: () => context.read<SearchCubit>().searchMovies(""),
+          );
         }
 
         if (state.movies.isEmpty) {
@@ -37,14 +38,15 @@ class SearchResultsView extends StatelessWidget {
 
         return MoviesGrid(
           controller: scrollController,
-          itemCount: state.movies.length + (state is SearchPaginationLoading ? 1 : 0),
+          itemCount:
+              state.movies.length + (state is SearchPaginationLoading ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < state.movies.length) {
               final movie = state.movies[index];
               return MovieItem(
-                movieId: movie.id,
-                rating: movie.rating.toString(),
                 imagePath: movie.mediumCoverImage,
+                rating: movie.rating,
+                movieId: movie.id,
               );
             }
             return const Center(

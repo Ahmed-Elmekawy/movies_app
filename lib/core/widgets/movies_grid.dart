@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'movie_item.dart';
 
 class MoviesGrid extends StatelessWidget {
   final int itemCount;

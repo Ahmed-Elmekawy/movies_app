@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:movies_app/core/constants/app_constants.dart';
 import 'package:movies_app/features/auth/data/data_sources/auth_firebase_data_source.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../models/user_model.dart';
@@ -16,20 +17,27 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     this._firestore,
   );
 
+  CollectionReference<UserModel> get _usersCollection =>
+      _firestore.collection(FirebaseConstants.usersCollection).withConverter<UserModel>(
+            fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+            toFirestore: (user, _) => user.toJson(),
+          );
+
   @override
   Future<UserModel> signInWithGoogle() async {
     try {
       _googleSignIn.initialize(
-          serverClientId:
-              "570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com");
+        serverClientId: ApiConstants.serverClientId,
+      );
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user == null) {
@@ -46,6 +54,7 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
           email: user.email ?? '',
           watchList: [],
           history: [],
+          avatar: AppConstants.defaultAvatar,
         );
         await _addToFireStore(userModel);
       }
@@ -162,23 +171,21 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   }
 
   Future<UserModel?> _getFromFireStore(String uid) async {
-    final doc = await _firestore.collection('users').doc(uid).get();
-    if (doc.exists && doc.data() != null) {
-      return UserModel.fromJson(doc.data()!);
-    }
-    return null;
+    final doc = await _usersCollection.doc(uid).get();
+    return doc.data();
   }
 
   Future<void> _addToFireStore(UserModel user) async {
-    await _firestore.collection('users').doc(user.id).set(user.toJson());
+    await _usersCollection.doc(user.id).set(user);
   }
 
   Future<UserCredential> _reAuthWithCredential(
-      AuthCredential credential) async {
+    AuthCredential credential,
+  ) async {
     try {
       final User? user = _firebaseAuth.currentUser;
       if (user == null) throw RemoteException('No user logged in');
-      
+
       return await user.reauthenticateWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       throw RemoteException(_handleAuthException(e));
@@ -188,27 +195,24 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   }
 
   @override
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount(String password) async {
     try {
       final user = _firebaseAuth.currentUser;
-      if (user == null) return;
+      if (user == null) throw RemoteException('No user logged in');
+
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
+      await _reAuthWithCredential(credential);
 
       final uid = user.uid;
+      await _usersCollection.doc(uid).delete();
 
-      // 1. Delete user data from Firestore
-      await _firestore.collection('users').doc(uid).delete();
-
-      // 2. Delete the user from Firebase Auth
-      // If this fails with 'requires-recent-login', the catch block handles it
       await user.delete();
 
-      // 3. Clean up local sign-in state
       await _googleSignIn.signOut();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'requires-recent-login') {
-        throw RemoteException(
-            'Sensitive operation. Please re-authenticate before deleting your account.');
-      }
       throw RemoteException(_handleAuthException(e));
     } catch (e) {
       throw RemoteException('An error occurred during account deletion: $e');
@@ -216,8 +220,26 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   }
 
   @override
-  Future<void> resetPassword() async {
-     // Implementation depends on requirements
+  Future<void> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) throw RemoteException('No user logged in');
+
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: oldPassword,
+      );
+      await _reAuthWithCredential(credential);
+
+      await user.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      throw RemoteException(_handleAuthException(e));
+    } catch (e) {
+      throw RemoteException('An error occurred during password update: $e');
+    }
   }
 
   String _handleAuthException(FirebaseAuthException e) {

@@ -6,7 +6,7 @@ import '../../../../../core/widgets/custom_button.dart';
 
 class EditProfileActionsSection extends StatelessWidget {
   final VoidCallback onDelete;
-  final VoidCallback onUpdate;
+  final VoidCallback? onUpdate;
 
   const EditProfileActionsSection({
     super.key,

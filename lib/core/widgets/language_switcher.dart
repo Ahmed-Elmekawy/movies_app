@@ -34,7 +34,7 @@ class LanguageSwitcher extends StatelessWidget {
             AnimatedAlign(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              alignment: isEnglish ? Alignment.centerLeft : Alignment.centerRight,
+              alignment: isEnglish ? AlignmentDirectional.centerStart : AlignmentDirectional.centerEnd,
               child: Container(
                 width: 32.w,
                 height: 32.h,

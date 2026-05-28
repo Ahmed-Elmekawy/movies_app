@@ -32,35 +32,37 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (context) => sl<HomeCubit>()..getHomeData(),
       child: Scaffold(
-        body: Builder(
-          builder: (context) {
-            return Stack(
-              alignment: AlignmentGeometry.bottomEnd,
-              children: [
-                IndexedStack(index: _currentIndex, children: _screens),
-                BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) {
-                    if (state is LogoutLoading || state is DeleteAccountLoading) {
-                      return const SizedBox.shrink();
-                    }
-                    return CustomBottomNavBar(
-                      currentIndex: _currentIndex,
-                      onTap: (index) {
-                        if (index == 0) {
-                          context.read<HomeCubit>().getHomeData();
-                        } else if (index == 3) {
-                          context.read<AuthCubit>().checkAuthStatus();
-                        }
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
-                    );
-                  },
-                ),
-              ],
-            );
-          },
+        body: SafeArea(
+          child: Builder(
+            builder: (context) {
+              return Stack(
+                alignment: AlignmentGeometry.bottomEnd,
+                children: [
+                  IndexedStack(index: _currentIndex, children: _screens),
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      if (state is LogoutLoading || state is DeleteAccountLoading) {
+                        return const SizedBox.shrink();
+                      }
+                      return CustomBottomNavBar(
+                        currentIndex: _currentIndex,
+                        onTap: (index) {
+                          if (index == 0) {
+                            context.read<HomeCubit>().getHomeData();
+                          } else if (index == 3) {
+                            context.read<AuthCubit>().checkAuthStatus();
+                          }
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

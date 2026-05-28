@@ -1,17 +1,21 @@
 import 'package:movies_app/core/utils/app_assets.dart';
 
 abstract class AppConstants {
-  static const List<String> avatars = [
-    AppImages.avatar1,
-    AppImages.avatar2,
-    AppImages.avatar3,
-    AppImages.avatar4,
-    AppImages.avatar5,
-    AppImages.avatar6,
-    AppImages.avatar7,
-    AppImages.avatar8,
-    AppImages.avatar9,
-  ];
+  static const Map<String, String> avatarMap = {
+    'avatar1': AppImages.avatar1,
+    'avatar2': AppImages.avatar2,
+    'avatar3': AppImages.avatar3,
+    'avatar4': AppImages.avatar4,
+    'avatar5': AppImages.avatar5,
+    'avatar6': AppImages.avatar6,
+    'avatar7': AppImages.avatar7,
+    'avatar8': AppImages.avatar8,
+    'avatar9': AppImages.avatar9,
+  };
+
+  static List<String> get avatarKeys => avatarMap.keys.toList();
+
+  static String getAvatarPath(String? key) => avatarMap[key] ?? AppImages.avatar1;
 
   static const List<String> genres = [
     'Action',

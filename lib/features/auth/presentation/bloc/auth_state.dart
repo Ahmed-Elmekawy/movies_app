@@ -24,3 +24,11 @@ class AuthFailure extends AuthState {
 class Unauthenticated extends AuthState {}
 
 class ForgotPasswordEmailSent extends AuthState {}
+
+class DeleteAccountLoading extends AuthState {}
+
+class DeleteAccountSuccess extends AuthState {}
+
+class LogoutLoading extends AuthState {}
+
+class UpdatePasswordSuccess extends AuthState {}

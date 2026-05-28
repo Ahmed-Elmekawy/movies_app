@@ -45,7 +45,7 @@ class ProfileHeaderSection extends StatelessWidget {
                 children: [
                   ProfileStatItem(
                     count: watchListCount.toString(),
-                    label: 'Wish List',
+                    label: 'Watch List',
                   ),
                   40.horizontalSpace, // Added space between items
                   ProfileStatItem(

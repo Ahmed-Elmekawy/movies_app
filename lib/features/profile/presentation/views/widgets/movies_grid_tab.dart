@@ -3,43 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/empty_view.dart';
 import '../../../../../core/widgets/movie_item.dart';
-
-/// Mock movie data for design preview
-class _MockMovie {
-  final String rating;
-
-  const _MockMovie({
-    required this.rating,
-  });
-}
-
-const _mockMovies = [
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-  _MockMovie(rating: '7.7'),
-];
+import '../../../../auth/domain/entities/movie_entity.dart';
 
 class MoviesGridTab extends StatelessWidget {
-  final bool isEmpty;
+  final List<MovieEntity> movies;
 
-  const MoviesGridTab({super.key, this.isEmpty = true});
+  const MoviesGridTab({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {
-    if (isEmpty) {
+    if (movies.isEmpty) {
       return const AppEmptyView(
         imagePath: AppImages.empty,
         title: 'No Movies Yet',
-        subtitle: 'Your watch list is empty',
+        subtitle: 'Your list is empty',
       );
     }
 
@@ -51,9 +28,11 @@ class MoviesGridTab extends StatelessWidget {
         mainAxisSpacing: 8.h,
         childAspectRatio: 0.65,
       ),
-      itemCount: _mockMovies.length,
+      itemCount: movies.length,
       itemBuilder: (_, index) => MovieItem(
-        rating: _mockMovies[index].rating,
+        imagePath: movies[index].mediumCoverImage,
+        rating: movies[index].rating,
+        movieId: movies[index].id,
       ),
     );
   }

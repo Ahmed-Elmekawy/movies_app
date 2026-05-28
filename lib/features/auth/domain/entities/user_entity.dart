@@ -7,8 +7,6 @@ class UserEntity {
   final String avatar;
   final List<MovieEntity> watchList;
   final List<MovieEntity> history;
-  final int wishlist;
-
 
   UserEntity({
     required this.name,
@@ -17,6 +15,5 @@ class UserEntity {
     required this.avatar,
     required this.watchList,
     required this.history,
-    required this.wishlist,
   });
 }

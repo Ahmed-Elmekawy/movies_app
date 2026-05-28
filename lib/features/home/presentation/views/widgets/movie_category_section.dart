@@ -62,12 +62,13 @@ class MovieCategorySection extends StatelessWidget {
             itemCount: movies.length,
             separatorBuilder: (context, index) => 12.horizontalSpace,
             itemBuilder: (context, index) {
+              final movie = movies[index];
               return SizedBox(
                 width: 150.w,
                 child: MovieItem(
-                  movieId: movies[index].id,
-                  imagePath: movies[index].mediumCoverImage,
-                  rating: movies[index].rating.toString(),
+                  imagePath: movie.mediumCoverImage,
+                  rating: movie.rating,
+                  movieId: movie.id,
                 ),
               );
             },

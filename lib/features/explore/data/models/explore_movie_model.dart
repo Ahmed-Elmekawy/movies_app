@@ -1,4 +1,3 @@
-import 'package:movies_app/features/home/domain/entites/home_movie_entity.dart';
 import '../../domain/entities/explore_movie_entity.dart';
 import 'explore_torrent_model.dart';
 

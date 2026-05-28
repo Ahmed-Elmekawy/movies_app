@@ -11,6 +11,7 @@ class CustomWarningDialog extends StatelessWidget {
   final VoidCallback onActionPressed;
   final Color? actionColor;
   final IconData? icon;
+  final Widget? content;
 
   const CustomWarningDialog({
     super.key,
@@ -21,6 +22,7 @@ class CustomWarningDialog extends StatelessWidget {
     required this.onActionPressed,
     this.actionColor,
     this.icon,
+    this.content,
   });
 
   @override
@@ -69,6 +71,10 @@ class CustomWarningDialog extends StatelessWidget {
                 color: AppColors.white.withValues(alpha: 0.7),
               ),
             ),
+            if (content != null) ...[
+              16.verticalSpace,
+              content!,
+            ],
             32.verticalSpace,
             // Actions
             Row(
@@ -138,6 +144,7 @@ class CustomWarningDialog extends StatelessWidget {
     required VoidCallback onActionPressed,
     Color? actionColor,
     IconData? icon,
+    Widget? content,
   }) {
     showDialog(
       context: context,
@@ -150,6 +157,7 @@ class CustomWarningDialog extends StatelessWidget {
         onActionPressed: onActionPressed,
         actionColor: actionColor,
         icon: icon,
+        content: content,
       ),
     );
   }

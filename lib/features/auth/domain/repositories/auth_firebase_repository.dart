@@ -4,7 +4,10 @@ import '../entities/user_entity.dart';
 
 abstract class AuthFirebaseRepository {
   Future<Either<Failure, UserEntity>> signInWithGoogle();
-  Future<Either<Failure, UserEntity>> signInWithEmailAndPassword(String email, String password);
+  Future<Either<Failure, UserEntity>> signInWithEmailAndPassword(
+    String email,
+    String password,
+  );
   Future<Either<Failure, UserEntity>> signUpWithEmailAndPassword({
     required String name,
     required String email,
@@ -15,4 +18,9 @@ abstract class AuthFirebaseRepository {
   Future<Either<Failure, void>> sendPasswordResetEmail(String email);
   Future<Either<Failure, void>> signOut();
   Future<Either<Failure, UserEntity?>> checkAuthStatus();
+  Future<Either<Failure, void>> deleteAccount(String password);
+  Future<Either<Failure, void>> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+  });
 }

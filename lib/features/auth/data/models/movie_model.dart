@@ -1,5 +1,3 @@
-import 'package:movies_app/features/home/domain/entites/home_movie_entity.dart';
-
 import '../../domain/entities/movie_entity.dart';
 
 class MovieModel {
@@ -13,6 +11,14 @@ class MovieModel {
     id = json['id'];
     rating = json['rating']?.toDouble();
     mediumCoverImage = json['medium_cover_image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'rating': rating,
+      'medium_cover_image': mediumCoverImage,
+    };
   }
 
   MovieEntity toEntity() {

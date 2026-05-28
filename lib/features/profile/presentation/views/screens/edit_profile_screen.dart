@@ -216,7 +216,11 @@ class _EditProfileScreenBodyState extends State<_EditProfileScreenBody> {
                       ),
                       EditProfileActionsSection(
                         onDelete: () => _onDeleteAccount(context),
-                        onUpdate: () => _onUpdate(context),
+                        onUpdate: () {
+                          profileState is UpdateProfileLoading
+                              ? null
+                              : () => _onUpdate(context);
+                        },
                       ),
                     ],
                   ),

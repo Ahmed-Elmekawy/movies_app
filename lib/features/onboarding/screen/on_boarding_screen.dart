@@ -66,29 +66,29 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final currentPageData = _pages[_currentIndex];
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: Stack(
-        children: [
-          _buildBackgroundPages(),
-          OnBoardingGradientOverlay(gradientColor: currentPageData.gradientColor),
-          OnBoardingContent(
-            model: currentPageData,
-            isFirst: _isFirst,
-            isLast: _isLast,
-            isSecond: _isSecond,
-            onNext: _handleNext,
-            onBack: _handleBack,
-          ),
-          Positioned(
-            top: 50.h,
-            right: 20.w,
-            child: const LanguageSwitcher(),
-          ),
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            _buildBackgroundPages(),
+            OnBoardingGradientOverlay(gradientColor: currentPageData.gradientColor),
+            OnBoardingContent(
+              model: currentPageData,
+              isFirst: _isFirst,
+              isLast: _isLast,
+              isSecond: _isSecond,
+              onNext: _handleNext,
+              onBack: _handleBack,
+            ),
+            Positioned(
+              top: 50.h,
+              right: 20.w,
+              child: const LanguageSwitcher(),
+            ),
+          ],
+        ),
       ),
     );
   }

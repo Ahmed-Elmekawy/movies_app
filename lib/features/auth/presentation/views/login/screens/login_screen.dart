@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/app_routes.dart';
 import 'package:movies_app/core/utils/navigation_service.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
@@ -38,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          UIUtils.showToast(context.l10n.loginSuccessful);
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.home,

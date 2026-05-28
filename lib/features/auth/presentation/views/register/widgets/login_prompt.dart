@@ -26,7 +26,7 @@ class LoginPrompt extends StatelessWidget {
         GestureDetector(
           onTap: () => NavigationService.replaceWith(context, AppRoutes.loginScreen),
           child: Text(
-            l10n.login,
+           " ${l10n.login}",
             style: TextStyle(
               color: theme.colorScheme.primary,
               fontSize: 14.sp,

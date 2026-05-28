@@ -38,7 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       listener: (context, state) {
         if (state is AuthLoading) {
           UIUtils.showLoadingDialog(context);
-        } else if (state is AuthInitial) {
+        } else if (state is ForgotPasswordEmailSent) {
            UIUtils.hideLoadingDialog(context);
            UIUtils.showToast(l10n.resetLinkSent);
            Navigator.pop(context);

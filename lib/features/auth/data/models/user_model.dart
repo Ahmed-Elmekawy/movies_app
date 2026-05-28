@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/user_entity.dart';
 import 'movie_model.dart';
 
@@ -22,15 +23,15 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String? ?? '',
-      name: json['name'] as String? ?? '',
-      phone: json['phone'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      avatar: json['avatar'] as String? ?? 'avatar1',
-      watchList: (json['watch_list'] as List? ?? [])
+      id: json[FirebaseConstants.id] as String? ?? '',
+      name: json[FirebaseConstants.name] as String? ?? '',
+      phone: json[FirebaseConstants.phone] as String? ?? '',
+      email: json[FirebaseConstants.email] as String? ?? '',
+      avatar: json[FirebaseConstants.avatar] as String? ?? 'avatar1',
+      watchList: (json[FirebaseConstants.watchList] as List? ?? [])
           .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      history: (json['history'] as List? ?? [])
+      history: (json[FirebaseConstants.history] as List? ?? [])
           .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -38,13 +39,13 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'phone': phone,
-      'email': email,
-      'avatar': avatar,
-      'watch_list': watchList.map((movie) => movie.toJson()).toList(),
-      'history': history.map((movie) => movie.toJson()).toList(),
+      FirebaseConstants.id: id,
+      FirebaseConstants.name: name,
+      FirebaseConstants.phone: phone,
+      FirebaseConstants.email: email,
+      FirebaseConstants.avatar: avatar,
+      FirebaseConstants.watchList: watchList.map((movie) => movie.toJson()).toList(),
+      FirebaseConstants.history: history.map((movie) => movie.toJson()).toList(),
     };
   }
 

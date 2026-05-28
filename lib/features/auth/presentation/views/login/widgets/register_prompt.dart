@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies_app/features/auth/presentation/views/register/screens/register_screen.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_routes.dart';
+import '../../../../../../core/utils/navigation_service.dart';
 
 
 class RegisterPrompt extends StatelessWidget {
@@ -22,12 +22,7 @@ class RegisterPrompt extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegisterScreen(),
-              ),
-            );
+            NavigationService.navigateTo(context, AppRoutes.registerScreen);
           },
           child: Text(
             'Create One',

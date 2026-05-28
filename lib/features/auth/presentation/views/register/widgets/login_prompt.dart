@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_routes.dart';
+import '../../../../../../core/utils/navigation_service.dart';
 
 class LoginPrompt extends StatelessWidget {
   const LoginPrompt({super.key});
@@ -20,7 +22,7 @@ class LoginPrompt extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => NavigationService.replaceWith(context, AppRoutes.loginScreen),
           child: Text(
             'Login',
             style: TextStyle(

@@ -33,6 +33,12 @@ class MovieDetailsScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is MovieDetailsSuccess) {
               final movie = state.movie;
+              final screenshots = [
+                movie.largeScreenshotImage1,
+                movie.largeScreenshotImage2,
+                movie.largeScreenshotImage3,
+              ].where((s) => s.isNotEmpty).toList();
+
               return BlocListener<ProfileCubit, ProfileState>(
                 listener: (context, profileState) {
                   if (profileState is AddToWatchListSuccess) {
@@ -58,11 +64,11 @@ class MovieDetailsScreen extends StatelessWidget {
                             mediumCoverImage: movie.mediumCoverImage,
                           );
                           context.read<ProfileCubit>().addToWatchList(
-                            movieEntity,
-                          );
+                                movieEntity,
+                              );
                           context.read<ProfileCubit>().addToHistory(
-                            movieEntity,
-                          );
+                                movieEntity,
+                              );
                         },
                       ),
                       Expanded(
@@ -76,17 +82,15 @@ class MovieDetailsScreen extends StatelessWidget {
                                 views: movie.runtime,
                                 rating: movie.rating,
                               ),
-                              16.verticalSpace,
-                              _Section(
-                                title: 'Screen Shots',
-                                child: MovieScreenshotsSection(
-                                  screenshotPaths: [
-                                    movie.largeScreenshotImage1,
-                                    movie.largeScreenshotImage2,
-                                    movie.largeScreenshotImage3,
-                                  ],
+                              if (screenshots.isNotEmpty) ...[
+                                16.verticalSpace,
+                                _Section(
+                                  title: 'Screen Shots',
+                                  child: MovieScreenshotsSection(
+                                    screenshotPaths: screenshots,
+                                  ),
                                 ),
-                              ),
+                              ],
                               if (state.similarMovies.isNotEmpty) ...[
                                 16.verticalSpace,
                                 _Section(
@@ -96,33 +100,40 @@ class MovieDetailsScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                              16.verticalSpace,
-                              _Section(
-                                title: 'Summary',
-                                child: MovieSummarySection(
-                                  summary: movie.description,
+                              if (movie.description.isNotEmpty) ...[
+                                16.verticalSpace,
+                                _Section(
+                                  title: 'Summary',
+                                  child: MovieSummarySection(
+                                    summary: movie.description,
+                                  ),
                                 ),
-                              ),
-                              16.verticalSpace,
-                              _Section(
-                                title: 'Cast',
-                                child: MovieCastSection(
-                                  cast: movie.cast
-                                      .map(
-                                        (e) => {
-                                          'name': e.name,
-                                          'character': e.characterName,
-                                          'image': e.profileImage,
-                                        },
-                                      )
-                                      .toList(),
+                              ],
+                              if (movie.cast.isNotEmpty) ...[
+                                16.verticalSpace,
+                                _Section(
+                                  title: 'Cast',
+                                  child: MovieCastSection(
+                                    cast: movie.cast
+                                        .map(
+                                          (e) => {
+                                            'name': e.name,
+                                            'character': e.characterName,
+                                            'image': e.profileImage,
+                                          },
+                                        )
+                                        .toList(),
+                                  ),
                                 ),
-                              ),
-                              16.verticalSpace,
-                              _Section(
-                                title: 'Genres',
-                                child: MovieGenresSection(genres: movie.genres),
-                              ),
+                              ],
+                              if (movie.genres.isNotEmpty) ...[
+                                16.verticalSpace,
+                                _Section(
+                                  title: 'Genres',
+                                  child:
+                                      MovieGenresSection(genres: movie.genres),
+                                ),
+                              ],
                             ],
                           ),
                         ),

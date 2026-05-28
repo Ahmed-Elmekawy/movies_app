@@ -8,7 +8,7 @@ import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
 import 'package:movies_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:movies_app/core/widgets/language_switcher.dart';
 import 'package:movies_app/features/auth/presentation/views/register/widgets/avatar_carousel.dart';
-import 'package:movies_app/features/auth/presentation/views/login/widgets/login_prompt.dart';
+import 'package:movies_app/features/auth/presentation/views/register/widgets/login_prompt.dart';
 import 'package:movies_app/features/auth/presentation/views/register/widgets/register_form.dart';
 
 class RegisterScreen extends StatefulWidget {

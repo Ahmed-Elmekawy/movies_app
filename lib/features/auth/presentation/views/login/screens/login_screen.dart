@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/utils/app_routes.dart';
+import 'package:movies_app/core/utils/navigation_service.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
 import 'package:movies_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:movies_app/core/widgets/language_switcher.dart';
 import 'package:movies_app/features/auth/presentation/views/login/widgets/login_form.dart';
 import 'package:movies_app/features/auth/presentation/views/login/widgets/login_header.dart';
-import 'package:movies_app/features/auth/presentation/views/register/widgets/register_prompt.dart';
+import 'package:movies_app/features/auth/presentation/views/login/widgets/register_prompt.dart';
 import 'package:movies_app/features/auth/presentation/views/login/widgets/social_login_section.dart';
-import '../../forgot_password/screens/forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
           UIUtils.showToast("Login Successful");
           Navigator.pushNamedAndRemoveUntil(
             context,
-            AppRoutes.profile,
+            AppRoutes.home,
             (route) => false,
           );
         } else if (state is AuthFailure) {
@@ -65,16 +65,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     isLoading: isLoading,
                     onLoginPressed: () {
                       context.read<AuthCubit>().login(
-                            _emailController.text.trim(),
-                            _passwordController.text,
-                          );
+                        _emailController.text.trim(),
+                        _passwordController.text,
+                      );
                     },
                     onForgotPasswordPressed: () {
-                      Navigator.push(
+                      NavigationService.navigateTo(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
-                        ),
+                        AppRoutes.forgotPasswordScreen,
                       );
                     },
                   ),

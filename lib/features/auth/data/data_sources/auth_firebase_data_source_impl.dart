@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:movies_app/core/constants/app_constants.dart';
 import 'package:movies_app/features/auth/data/data_sources/auth_firebase_data_source.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../models/user_model.dart';
@@ -16,12 +17,17 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     this._firestore,
   );
 
+  CollectionReference<UserModel> get _usersCollection =>
+      _firestore.collection(FirebaseConstants.usersCollection).withConverter<UserModel>(
+            fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+            toFirestore: (user, _) => user.toJson(),
+          );
+
   @override
   Future<UserModel> signInWithGoogle() async {
     try {
       _googleSignIn.initialize(
-        serverClientId:
-            "570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com",
+        serverClientId: ApiConstants.serverClientId,
       );
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
 
@@ -48,7 +54,7 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
           email: user.email ?? '',
           watchList: [],
           history: [],
-          avatar: "avatar1",
+          avatar: AppConstants.defaultAvatar,
         );
         await _addToFireStore(userModel);
       }
@@ -165,15 +171,12 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
   }
 
   Future<UserModel?> _getFromFireStore(String uid) async {
-    final doc = await _firestore.collection('users').doc(uid).get();
-    if (doc.exists && doc.data() != null) {
-      return UserModel.fromJson(doc.data()!);
-    }
-    return null;
+    final doc = await _usersCollection.doc(uid).get();
+    return doc.data();
   }
 
   Future<void> _addToFireStore(UserModel user) async {
-    await _firestore.collection('users').doc(user.id).set(user.toJson());
+    await _usersCollection.doc(user.id).set(user);
   }
 
   Future<UserCredential> _reAuthWithCredential(
@@ -204,7 +207,7 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
       await _reAuthWithCredential(credential);
 
       final uid = user.uid;
-      await _firestore.collection('users').doc(uid).delete();
+      await _usersCollection.doc(uid).delete();
 
       await user.delete();
 

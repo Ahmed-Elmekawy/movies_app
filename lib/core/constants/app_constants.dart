@@ -45,6 +45,8 @@ abstract class AppConstants {
     'Thriller',
     'Western',
   ];
+
+  static const String defaultAvatar = 'avatar1';
 }
 
 abstract class ApiConstants {
@@ -52,6 +54,8 @@ abstract class ApiConstants {
   static const String movieDetails = 'movie_details.json';
   static const String movieSuggestions = 'movie_suggestions.json';
   static const String listMovies = 'list_movies.json';
+  
+  static const String serverClientId = "570232457456-1pft4rjlpf6omrdbdeo3cafp6a0b08ca.apps.googleusercontent.com";
 }
 
 abstract class CacheConstants {
@@ -60,4 +64,13 @@ abstract class CacheConstants {
 
 abstract class FirebaseConstants {
   static const String usersCollection = 'users';
+  static const String id = 'id';
+  static const String name = 'name';
+  static const String phone = 'phone';
+  static const String email = 'email';
+  static const String avatar = 'avatar';
+  static const String watchList = 'watch_list';
+  static const String history = 'history';
+  static const String rating = 'rating';
+  static const String mediumCoverImage = 'medium_cover_image';
 }

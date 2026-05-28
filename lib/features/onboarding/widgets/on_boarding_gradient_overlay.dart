@@ -17,8 +17,8 @@ class OnBoardingGradientOverlay extends StatelessWidget {
             colors: [
               Colors.transparent,
               Colors.transparent,
-              gradientColor.withOpacity(0.4),
-              gradientColor.withOpacity(0.9),
+              gradientColor.withValues(alpha: 0.4),
+              gradientColor.withValues(alpha: 0.9),
               gradientColor,
             ],
             stops: const [0.0, 0.5, 0.7, 0.85, 1.0],

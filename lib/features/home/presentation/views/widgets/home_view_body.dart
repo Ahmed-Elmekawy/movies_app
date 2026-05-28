@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/widgets/custom_network_image.dart';
+import '../../../../../core/widgets/error_view.dart';
 import '../../bloc/home_cubit.dart';
 import '../../bloc/home_state.dart';
 import 'available_now_section.dart';
@@ -25,7 +26,10 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is HomeFailure) {
-          return Center(child: Text(state.message));
+          return AppErrorView(
+            message: state.message,
+            onRetry: () => context.read<HomeCubit>().getHomeData(),
+          );
         } else if (state is HomeSuccess) {
           final movies = state.availableNowMovies;
           final categoryMovies = state.categoryMovies;

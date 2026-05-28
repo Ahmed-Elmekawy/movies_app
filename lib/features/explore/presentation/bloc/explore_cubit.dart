@@ -10,6 +10,8 @@ class ExploreCubit extends Cubit<ExploreState> {
   String _currentGenre = 'Action';
   int _currentPage = 1;
 
+  String get currentGenre => _currentGenre;
+
   Future<void> getMoviesByGenre(String genre) async {
     _currentGenre = genre;
     _currentPage = 1;
@@ -18,8 +20,8 @@ class ExploreCubit extends Cubit<ExploreState> {
     final result = await getMoviesByGenreUseCase(_currentGenre, _currentPage);
 
     result.fold(
-      (failure) => emit(ExploreFailure(failure.message)),
-      (movies) {
+          (failure) => emit(ExploreFailure(failure.message)),
+          (movies) {
         emit(ExploreSuccess(
           movies: movies,
           page: _currentPage,
@@ -31,21 +33,21 @@ class ExploreCubit extends Cubit<ExploreState> {
 
   Future<void> loadMoreMovies() async {
     final currentState = state;
-    
+
     if (currentState is ExploreSuccess && currentState.hasMore) {
       final oldMovies = currentState.movies;
       emit(ExplorePaginationLoading(oldMovies));
-      
+
       _currentPage++;
       final result = await getMoviesByGenreUseCase(_currentGenre, _currentPage);
 
       result.fold(
-        (failure) {
+            (failure) {
           _currentPage--;
           emit(ExplorePaginationFailure(oldMovies, failure.message));
           emit(ExploreSuccess(movies: oldMovies, page: _currentPage, hasMore: true));
         },
-        (newMovies) {
+            (newMovies) {
           if (newMovies.isEmpty) {
             emit(ExploreSuccess(
               movies: oldMovies,

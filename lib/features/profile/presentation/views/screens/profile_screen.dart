@@ -5,6 +5,7 @@ import 'package:movies_app/core/constants/app_constants.dart';
 import '../../../../../core/utils/app_routes.dart';
 import '../../../../../core/utils/navigation_service.dart';
 import '../../../../../core/widgets/auth_loading_content.dart';
+import '../../../../../core/widgets/error_view.dart';
 import '../../../../auth/presentation/bloc/auth_cubit.dart';
 import '../../../../auth/presentation/bloc/auth_state.dart';
 import '../../bloc/profile_cubit.dart';
@@ -114,6 +115,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
+              ),
+            );
+          }
+          if (state is AuthFailure) {
+            return Scaffold(
+              body: AppErrorView(
+                message: state.message,
+                onRetry: () => context.read<AuthCubit>().checkAuthStatus(),
               ),
             );
           }

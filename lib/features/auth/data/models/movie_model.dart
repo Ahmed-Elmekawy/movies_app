@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/movie_entity.dart';
 
 class MovieModel {
@@ -8,16 +9,16 @@ class MovieModel {
   MovieModel({this.id, this.rating, this.mediumCoverImage});
 
   MovieModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    rating = json['rating']?.toDouble();
-    mediumCoverImage = json['medium_cover_image'];
+    id = json[FirebaseConstants.id];
+    rating = json[FirebaseConstants.rating]?.toDouble();
+    mediumCoverImage = json[FirebaseConstants.mediumCoverImage];
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'rating': rating,
-      'medium_cover_image': mediumCoverImage,
+      FirebaseConstants.id: id,
+      FirebaseConstants.rating: rating,
+      FirebaseConstants.mediumCoverImage: mediumCoverImage,
     };
   }
 

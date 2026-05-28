@@ -16,7 +16,7 @@ class OnBoardingPageItem extends StatelessWidget {
           height: double.infinity,
           width: double.infinity,
         ),
-        Container(color: Colors.black.withOpacity(0.2)),
+        Container(color: Colors.black.withValues(alpha: 0.2)),
       ],
     );
   }

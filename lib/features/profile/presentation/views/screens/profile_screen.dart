@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/app_constants.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
+import 'package:movies_app/core/widgets/language_switcher.dart';
 import '../../../../../core/utils/app_routes.dart';
 import '../../../../../core/utils/navigation_service.dart';
 import '../../../../../core/widgets/auth_loading_content.dart';
@@ -52,14 +54,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is LogoutLoading) {
-            return const Scaffold(
-              body: AuthLoadingContent(loadingMessage: "Logging out..."),
+            return Scaffold(
+              body: AuthLoadingContent(loadingMessage: context.l10n.loggingOut),
             );
           }
           if (state is DeleteAccountLoading) {
-            return const Scaffold(
+            return Scaffold(
               body: AuthLoadingContent(
-                loadingMessage: "Deleting your account...",
+                loadingMessage: context.l10n.deletingAccount,
               ),
             );
           }
@@ -69,6 +71,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               body: SafeArea(
                 child: Column(
                   children: [
+                    Padding(
+                      padding: REdgeInsets.fromLTRB(20, 16, 20, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            context.l10n.profile,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const LanguageSwitcher(),
+                        ],
+                      ),
+                    ),
                     ProfileHeaderSection(
                       avatarPath: AppConstants.getAvatarPath(user.avatar),
                       name: user.name,

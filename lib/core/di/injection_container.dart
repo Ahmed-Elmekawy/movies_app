@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:movies_app/core/common/bloc/locale/locale_cubit.dart';
 import '../../features/auth/data/data_sources/auth_firebase_data_source.dart';
 import '../../features/auth/data/data_sources/auth_firebase_data_source_impl.dart';
 import '../../features/auth/data/repository_impl/auth_firebase_repository_impl.dart';
@@ -180,6 +181,9 @@ Future<void> init() async {
   sl.registerLazySingleton<ExploreRemoteDataSource>(
     () => ExploreRemoteDataSourceImpl(sl()),
   );
+
+  // Core
+  sl.registerFactory(() => LocaleCubit(sl()));
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

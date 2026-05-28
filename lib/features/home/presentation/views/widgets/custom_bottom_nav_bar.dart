@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../../core/utils/app_assets.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
@@ -16,6 +17,7 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bottomTheme = theme.bottomNavigationBarTheme;
+    final l10n = context.l10n;
 
     return Padding(
       padding: REdgeInsets.all(8.0),
@@ -34,7 +36,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 path: AppImages.homeIcon,
                 color: bottomTheme.selectedItemColor,
               ),
-              label: 'Home',
+              label: l10n.home,
             ),
             BottomNavigationBarItem(
               icon: _NavBarIcon(
@@ -45,7 +47,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 path: AppImages.searchIcon,
                 color: bottomTheme.selectedItemColor,
               ),
-              label: 'Search',
+              label: l10n.search,
             ),
             BottomNavigationBarItem(
               icon: _NavBarIcon(
@@ -56,7 +58,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 path: AppImages.exploreIcon,
                 color: bottomTheme.selectedItemColor,
               ),
-              label: 'Explore',
+              label: l10n.browse,
             ),
             BottomNavigationBarItem(
               icon: _NavBarIcon(
@@ -67,7 +69,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 path: AppImages.profileIcon,
                 color: bottomTheme.selectedItemColor,
               ),
-              label: 'Profile',
+              label: l10n.profile,
             ),
           ],
         ),

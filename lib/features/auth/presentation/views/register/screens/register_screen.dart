@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/app_constants.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/bloc/auth_cubit.dart';
@@ -41,11 +42,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final avatarKeys = AppConstants.avatarKeys;
+    final l10n = context.l10n;
     
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
-          UIUtils.showToast("Registration Successful");
+          UIUtils.showToast(l10n.registrationSuccessful);
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.loginScreen,
@@ -68,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             title: Text(
-              'Register',
+              l10n.register,
               style: TextStyle(
                 color: theme.colorScheme.primary,
                 fontSize: 18.sp,
@@ -80,7 +82,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   AvatarCarousel(
                     selectedAvatarIndex: _selectedAvatarIndex,

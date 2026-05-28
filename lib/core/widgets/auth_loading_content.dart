@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../utils/app_colors.dart';
 
 class AuthLoadingContent extends StatelessWidget {
@@ -30,7 +31,7 @@ class AuthLoadingContent extends StatelessWidget {
             ),
             8.verticalSpace,
             Text(
-              "Please wait a moment...",
+              context.l10n.pleaseWait,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.white.withValues(alpha: 0.7),
               ),

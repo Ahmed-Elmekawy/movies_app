@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_assets.dart';
 
@@ -30,10 +31,10 @@ class AppEmptyView extends StatelessWidget {
               width: imageSize ?? 120.w,
               fit: BoxFit.contain,
             ),
-            if (title != null) ...[
+            if (title != null || subtitle == null && title == null) ...[
               24.verticalSpace,
               Text(
-                title!,
+                title ?? context.l10n.noResultsFound,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),

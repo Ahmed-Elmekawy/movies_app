@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'profile_stat_item.dart';
 
 class ProfileHeaderSection extends StatelessWidget {
@@ -19,20 +20,23 @@ class ProfileHeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: REdgeInsets.fromLTRB(20, 24, 20, 0),
+      padding: REdgeInsets.fromLTRB(20, 12, 20, 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Avatar & Name
           Column(
             children: [
-              CircleAvatar(radius: 40.r, backgroundImage: AssetImage(avatarPath)),
+              CircleAvatar(
+                radius: 40.r,
+                backgroundImage: AssetImage(avatarPath),
+              ),
               16.verticalSpace,
               Text(
                 name,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ],
           ),
@@ -45,12 +49,12 @@ class ProfileHeaderSection extends StatelessWidget {
                 children: [
                   ProfileStatItem(
                     count: watchListCount.toString(),
-                    label: 'Watch List',
+                    label: context.l10n.watchlist,
                   ),
-                  40.horizontalSpace, // Added space between items
+                  40.horizontalSpace,
                   ProfileStatItem(
                     count: historyCount.toString(),
-                    label: 'History',
+                    label: context.l10n.history,
                   ),
                 ],
               ),

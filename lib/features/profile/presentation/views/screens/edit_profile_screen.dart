@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/app_constants.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import '../../../../../core/di/injection_container.dart';
 import '../../../../../core/utils/app_routes.dart';
@@ -17,14 +18,26 @@ import '../widgets/edit_profile_avatar_section.dart';
 import '../widgets/edit_profile_form_section.dart';
 import '../widgets/edit_profile_actions_section.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<ProfileCubit>(),
+      child: const _EditProfileScreenBody(),
+    );
+  }
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenBody extends StatefulWidget {
+  const _EditProfileScreenBody();
+
+  @override
+  State<_EditProfileScreenBody> createState() => _EditProfileScreenBodyState();
+}
+
+class _EditProfileScreenBodyState extends State<_EditProfileScreenBody> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late final TextEditingController _phoneController;
@@ -80,12 +93,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _onDeleteAccount(BuildContext context) {
     final passwordController = TextEditingController();
+    final l10n = context.l10n;
     CustomWarningDialog.show(
       context,
-      title: 'Delete Account',
-      description:
-          'Are you sure you want to permanently delete your account?\nPlease enter your password to confirm.',
-      actionText: 'Delete',
+      title: l10n.deleteAccount,
+      description: l10n.deleteAccountConfirm,
+      actionText: l10n.delete,
       actionColor: Theme.of(context).colorScheme.error,
       icon: Icons.delete_forever_rounded,
       content: Padding(
@@ -94,9 +107,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           controller: passwordController,
           obscureText: true,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            hintText: 'Enter your password',
-            prefixIcon: Icon(Icons.lock_outline),
+          decoration: InputDecoration(
+            hintText: l10n.enterYourPassword,
+            prefixIcon: const Icon(Icons.lock_outline),
           ),
         ),
       ),
@@ -116,122 +129,120 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = context.l10n;
 
-    return BlocProvider(
-      create: (context) => sl<ProfileCubit>(),
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<ProfileCubit, ProfileState>(
-            listener: (context, state) {
-              if (state is UpdateProfileSuccess) {
-                context.read<AuthCubit>().checkAuthStatus();
-                UIUtils.showToast('Profile updated successfully');
-                NavigationService.goBack(context);
-              } else if (state is UpdateProfileFailure) {
-                UIUtils.showToast(state.message, isError: true);
-              }
-            },
-          ),
-          BlocListener<AuthCubit, AuthState>(
-            listener: (context, state) {
-              if (state is AuthFailure) {
-                UIUtils.showToast(state.message, isError: true);
-              } else if (state is Unauthenticated ||
-                  state is DeleteAccountSuccess) {
-                NavigationService.navigateAndRemoveUntil(
-                  context,
-                  AppRoutes.loginScreen,
-                );
-              }
-            },
-          ),
-        ],
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, authState) {
-            if (authState is LogoutLoading) {
-              return const Scaffold(
-                body: AuthLoadingContent(loadingMessage: "Logging out..."),
-              );
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state is UpdateProfileSuccess) {
+              context.read<AuthCubit>().checkAuthStatus();
+              UIUtils.showToast(l10n.profileUpdatedSuccessfully);
+              NavigationService.goBack(context);
+            } else if (state is UpdateProfileFailure) {
+              UIUtils.showToast(state.message, isError: true);
             }
-            if (authState is DeleteAccountLoading) {
-              return const Scaffold(
-                body: AuthLoadingContent(
-                  loadingMessage: "Deleting your account...",
-                ),
-              );
-            }
-            if (authState is AuthLoading) {
-              return const Scaffold(
-                body: AuthLoadingContent(
-                  loadingMessage: "Updating password...",
-                ),
-              );
-            }
-
-            return BlocBuilder<ProfileCubit, ProfileState>(
-              builder: (context, profileState) {
-                if (profileState is UpdateProfileLoading) {
-                  return const Scaffold(
-                    body: AuthLoadingContent(
-                      loadingMessage: "Updating profile...",
-                    ),
-                  );
-                }
-
-                return Scaffold(
-                  appBar: AppBar(
-                    leading: IconButton(
-                      onPressed: () => NavigationService.goBack(context),
-                      icon: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                    title: Text(
-                      'Edit Profile',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        color: colorScheme.primary,
-                        fontSize: 18.sp,
-                      ),
-                    ),
-                  ),
-                  body: SafeArea(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            padding: REdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              children: [
-                                40.verticalSpace,
-                                EditProfileAvatarSection(
-                                  avatarPath: AppConstants.getAvatarPath(
-                                    _selectedAvatarKey,
-                                  ),
-                                  onTap: _pickAvatar,
-                                ),
-                                EditProfileFormSection(
-                                  formKey: _formKey,
-                                  nameController: _nameController,
-                                  phoneController: _phoneController,
-                                  onResetPassword: _onResetPassword,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        EditProfileActionsSection(
-                          onDelete: () => _onDeleteAccount(context),
-                          onUpdate: () => _onUpdate(context),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
           },
         ),
+        BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthFailure) {
+              UIUtils.showToast(state.message, isError: true);
+            } else if (state is Unauthenticated ||
+                state is DeleteAccountSuccess) {
+              NavigationService.navigateAndRemoveUntil(
+                context,
+                AppRoutes.loginScreen,
+              );
+            }
+          },
+        ),
+      ],
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, authState) {
+          if (authState is LogoutLoading) {
+            return Scaffold(
+              body: AuthLoadingContent(loadingMessage: l10n.loggingOut),
+            );
+          }
+          if (authState is DeleteAccountLoading) {
+            return Scaffold(
+              body: AuthLoadingContent(
+                loadingMessage: l10n.deletingAccount,
+              ),
+            );
+          }
+          if (authState is AuthLoading) {
+            return Scaffold(
+              body: AuthLoadingContent(
+                loadingMessage: l10n.updatingPassword,
+              ),
+            );
+          }
+
+          return BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, profileState) {
+              if (profileState is UpdateProfileLoading) {
+                return Scaffold(
+                  body: AuthLoadingContent(
+                    loadingMessage: l10n.updatingProfile,
+                  ),
+                );
+              }
+
+              return Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    onPressed: () => NavigationService.goBack(context),
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  title: Text(
+                    l10n.editProfile,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      color: colorScheme.primary,
+                      fontSize: 18.sp,
+                    ),
+                  ),
+                ),
+                body: SafeArea(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: REdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              40.verticalSpace,
+                              EditProfileAvatarSection(
+                                avatarPath: AppConstants.getAvatarPath(
+                                  _selectedAvatarKey,
+                                ),
+                                onTap: _pickAvatar,
+                              ),
+                              EditProfileFormSection(
+                                formKey: _formKey,
+                                nameController: _nameController,
+                                phoneController: _phoneController,
+                                onResetPassword: _onResetPassword,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      EditProfileActionsSection(
+                        onDelete: () => _onDeleteAccount(context),
+                        onUpdate: () => _onUpdate(context),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

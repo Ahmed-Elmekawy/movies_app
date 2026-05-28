@@ -60,6 +60,7 @@ abstract class ApiConstants {
 
 abstract class CacheConstants {
   static const String onBoardingKey = "onBoarding";
+  static const String localeKey = "locale";
 }
 
 abstract class FirebaseConstants {

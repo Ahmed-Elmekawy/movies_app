@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../utils/app_colors.dart';
 import '../utils/navigation_service.dart';
 
@@ -7,7 +8,7 @@ class CustomWarningDialog extends StatelessWidget {
   final String title;
   final String description;
   final String actionText;
-  final String cancelText;
+  final String? cancelText;
   final VoidCallback onActionPressed;
   final Color? actionColor;
   final IconData? icon;
@@ -18,7 +19,7 @@ class CustomWarningDialog extends StatelessWidget {
     required this.title,
     required this.description,
     required this.actionText,
-    this.cancelText = "Cancel",
+    this.cancelText,
     required this.onActionPressed,
     this.actionColor,
     this.icon,
@@ -94,7 +95,7 @@ class CustomWarningDialog extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      cancelText,
+                      cancelText ?? context.l10n.cancel,
                       style: theme.textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -140,7 +141,7 @@ class CustomWarningDialog extends StatelessWidget {
     required String title,
     required String description,
     required String actionText,
-    String cancelText = "Cancel",
+    String? cancelText,
     required VoidCallback onActionPressed,
     Color? actionColor,
     IconData? icon,

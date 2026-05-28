@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../core/widgets/error_view.dart';
 import '../../../../../core/widgets/movie_item.dart';
 import '../../../../../core/widgets/movies_grid.dart';
@@ -13,6 +14,7 @@ class ExploreResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<ExploreCubit, ExploreState>(
       builder: (context, state) {
         if (state is ExploreLoading) {
@@ -29,11 +31,11 @@ class ExploreResultsView extends StatelessWidget {
         }
 
         if (state.movies.isEmpty && state is! ExploreInitial) {
-          return const Center(child: Text('No movies found for this genre.'));
+          return Center(child: Text(l10n.noMoviesFoundForGenre));
         }
 
         if (state is ExploreInitial) {
-          return const Center(child: Text('Select a genre to explore movies.'));
+          return Center(child: Text(l10n.selectGenreToExplore));
         }
 
         return MoviesGrid(

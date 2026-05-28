@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../core/widgets/custom_network_image.dart';
 import '../../../../../core/widgets/error_view.dart';
 import '../../bloc/home_cubit.dart';
@@ -35,7 +36,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           final categoryMovies = state.categoryMovies;
 
           if (movies.isEmpty) {
-            return const Center(child: Text('No movies available'));
+            return Center(child: Text(context.l10n.noMoviesAvailable));
           }
 
           return Stack(

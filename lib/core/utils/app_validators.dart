@@ -1,53 +1,60 @@
 class AppValidators {
-  static String? validateEmail(String? value) {
+  static String? validateEmail(String? value, {required String emailRequired, required String invalidEmail}) {
     if (value == null || value.isEmpty) {
-      return "Email is required";
+      return emailRequired;
     }
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(value)) {
-      return "Enter a valid email address";
+      return invalidEmail;
     }
     return null;
   }
 
-  static String? validatePassword(String? value) {
+  static String? validatePassword(String? value, {
+    required String passwordRequired,
+    required String passwordTooShort,
+    required String passwordInvalid,
+  }) {
     if (value == null || value.isEmpty) {
-      return "Password is required";
+      return passwordRequired;
     }
     if (value.length < 8) {
-      return "Password must be at least 8 characters";
+      return passwordTooShort;
     }
     final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$');
     if (!passwordRegex.hasMatch(value)) {
-      return "Password must contain both letters and numbers";
+      return passwordInvalid;
     }
     return null;
   }
 
-  static String? validateConfirmPassword(String? value, String password) {
+  static String? validateConfirmPassword(String? value, String password, {
+    required String confirmPasswordRequired,
+    required String passwordsDoNotMatch,
+  }) {
     if (value == null || value.isEmpty) {
-      return "Please confirm your password";
+      return confirmPasswordRequired;
     }
     if (value != password) {
-      return "Passwords do not match";
+      return passwordsDoNotMatch;
     }
     return null;
   }
 
-  static String? validateName(String? value) {
+  static String? validateName(String? value, {required String nameRequired}) {
     if (value == null || value.isEmpty) {
-      return "Name is required";
+      return nameRequired;
     }
     return null;
   }
 
-  static String? validatePhone(String? value) {
+  static String? validatePhone(String? value, {required String phoneRequired, required String invalidPhone}) {
     if (value == null || value.isEmpty) {
-      return "Phone number is required";
+      return phoneRequired;
     }
     final phoneRegex = RegExp(r'^(010|011|012|015)[0-9]{8}$');
     if (!phoneRegex.hasMatch(value)) {
-      return "Enter a valid Egyptian phone number";
+      return invalidPhone;
     }
     return null;
   }

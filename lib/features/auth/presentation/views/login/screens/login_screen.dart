@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          UIUtils.showToast(context.l10n.loginSuccessful);
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.home,

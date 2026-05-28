@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import '../../../../../core/utils/app_validators.dart';
+import '../../../../../core/widgets/auth_loading_content.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../auth/presentation/bloc/auth_cubit.dart';
@@ -45,98 +46,113 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           UIUtils.showToast(state.message, isError: true);
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new, color: colorScheme.primary),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            l10n.resetPassword,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              color: colorScheme.primary,
-              fontSize: 18.sp,
-            ),
-          ),
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  40.verticalSpace,
-                  CustomTextField(
-                    controller: _oldPasswordController,
-                    hintText: l10n.oldPassword,
-                    isPassword: true,
-                    validator: (value) => AppValidators.validatePassword(
-                      value,
-                      passwordRequired: l10n.passwordRequired,
-                      passwordTooShort: l10n.passwordTooShort,
-                      passwordInvalid: l10n.passwordInvalid,
-                    ),
-                    prefixIcon: const Icon(Icons.lock_open),
-                  ),
-                  20.verticalSpace,
-                  CustomTextField(
-                    controller: _passwordController,
-                    hintText: l10n.newPassword,
-                    isPassword: true,
-                    validator: (value) => AppValidators.validatePassword(
-                      value,
-                      passwordRequired: l10n.passwordRequired,
-                      passwordTooShort: l10n.passwordTooShort,
-                      passwordInvalid: l10n.passwordInvalid,
-                    ),
-                    prefixIcon: const Icon(Icons.lock_outline),
-                  ),
-                  20.verticalSpace,
-                  CustomTextField(
-                    controller: _confirmPasswordController,
-                    hintText: l10n.confirmNewPassword,
-                    isPassword: true,
-                    validator: (value) => AppValidators.validateConfirmPassword(
-                      value,
-                      _passwordController.text,
-                      confirmPasswordRequired: l10n.confirmPasswordRequired,
-                      passwordsDoNotMatch: l10n.passwordsDoNotMatch,
-                    ),
-                    prefixIcon: const Icon(Icons.lock_outline),
-                  ),
-                  40.verticalSpace,
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      return CustomButton(
-                        txtButton: l10n.updatePassword,
-                        onPressed: state is AuthLoading
-                            ? null
-                            : () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<AuthCubit>().updatePassword(
-                                        oldPassword: _oldPasswordController.text,
-                                        newPassword: _passwordController.text,
-                                      );
-                                }
-                              },
-                        backgroundColor: colorScheme.primary,
-                        foregroundColor: colorScheme.onPrimary,
-                        height: 52.h,
-                        textStyle: theme.textTheme.titleLarge?.copyWith(
-                          color: colorScheme.onPrimary,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+      child: BlocBuilder<AuthCubit,AuthState>(
+        builder: (context, authState) {
+          if (authState is AuthLoading) {
+            return Scaffold(
+              body: AuthLoadingContent(loadingMessage: l10n.updatingPassword),
+            );
+          }
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: colorScheme.primary,
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: Text(
+                l10n.resetPassword,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: colorScheme.primary,
+                  fontSize: 18.sp,
+                ),
               ),
             ),
-          ),
-        ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      40.verticalSpace,
+                      CustomTextField(
+                        controller: _oldPasswordController,
+                        hintText: l10n.oldPassword,
+                        isPassword: true,
+                        validator: (value) => AppValidators.validatePassword(
+                          value,
+                          passwordRequired: l10n.passwordRequired,
+                          passwordTooShort: l10n.passwordTooShort,
+                          passwordInvalid: l10n.passwordInvalid,
+                        ),
+                        prefixIcon: const Icon(Icons.lock_open),
+                      ),
+                      20.verticalSpace,
+                      CustomTextField(
+                        controller: _passwordController,
+                        hintText: l10n.newPassword,
+                        isPassword: true,
+                        validator: (value) => AppValidators.validatePassword(
+                          value,
+                          passwordRequired: l10n.passwordRequired,
+                          passwordTooShort: l10n.passwordTooShort,
+                          passwordInvalid: l10n.passwordInvalid,
+                        ),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                      ),
+                      20.verticalSpace,
+                      CustomTextField(
+                        controller: _confirmPasswordController,
+                        hintText: l10n.confirmNewPassword,
+                        isPassword: true,
+                        validator: (value) =>
+                            AppValidators.validateConfirmPassword(
+                              value,
+                              _passwordController.text,
+                              confirmPasswordRequired:
+                                  l10n.confirmPasswordRequired,
+                              passwordsDoNotMatch: l10n.passwordsDoNotMatch,
+                            ),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                      ),
+                      40.verticalSpace,
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return CustomButton(
+                            txtButton: l10n.updatePassword,
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      context.read<AuthCubit>().updatePassword(
+                                        oldPassword:
+                                            _oldPasswordController.text,
+                                        newPassword: _passwordController.text,
+                                      );
+                                    }
+                                  },
+                            backgroundColor: colorScheme.primary,
+                            foregroundColor: colorScheme.onPrimary,
+                            height: 52.h,
+                            textStyle: theme.textTheme.titleLarge?.copyWith(
+                              color: colorScheme.onPrimary,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

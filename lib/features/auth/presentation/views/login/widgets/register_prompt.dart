@@ -26,7 +26,7 @@ class RegisterPrompt extends StatelessWidget {
             NavigationService.navigateTo(context, AppRoutes.registerScreen);
           },
           child: Text(
-            l10n.signUp,
+            " ${l10n.signUp}",
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.w700,

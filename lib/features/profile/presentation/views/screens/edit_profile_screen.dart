@@ -167,29 +167,11 @@ class _EditProfileScreenBodyState extends State<_EditProfileScreenBody> {
           }
           if (authState is DeleteAccountLoading) {
             return Scaffold(
-              body: AuthLoadingContent(
-                loadingMessage: l10n.deletingAccount,
-              ),
+              body: AuthLoadingContent(loadingMessage: l10n.deletingAccount),
             );
           }
-          if (authState is AuthLoading) {
-            return Scaffold(
-              body: AuthLoadingContent(
-                loadingMessage: l10n.updatingPassword,
-              ),
-            );
-          }
-
           return BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, profileState) {
-              if (profileState is UpdateProfileLoading) {
-                return Scaffold(
-                  body: AuthLoadingContent(
-                    loadingMessage: l10n.updatingProfile,
-                  ),
-                );
-              }
-
               return Scaffold(
                 appBar: AppBar(
                   leading: IconButton(

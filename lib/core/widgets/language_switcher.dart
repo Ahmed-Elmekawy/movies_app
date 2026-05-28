@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../common/bloc/locale/locale_cubit.dart';
-import '../utils/app_colors.dart';
 
 class LanguageSwitcher extends StatelessWidget {
   const LanguageSwitcher({super.key});

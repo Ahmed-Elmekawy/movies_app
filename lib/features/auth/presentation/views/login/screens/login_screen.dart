@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/app_routes.dart';
 import 'package:movies_app/core/utils/navigation_service.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';

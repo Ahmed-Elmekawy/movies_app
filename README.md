@@ -26,7 +26,7 @@ Movies App is a comprehensive, production-ready Flutter application designed to 
 | ![Home](screenshots/en/home.png) | ![Search](screenshots/en/search.png) | ![Explore](screenshots/en/explore.png) | ![Profile](screenshots/en/profile.png) |
 
 ### Movie Details - Multiple Sections
-| Movie shots | Similar Movies | Cast & Details | Genres |
+| Movie Shots | Similar Movies | Cast & Details | Genres |
 |---------------|----------------|------------|---------|
 | ![Details 1](screenshots/en/movie_details_1.png) | ![Details 2](screenshots/en/movie_details_2.png) | ![Details 3](screenshots/en/movie_details_3.png) | ![Details 4](screenshots/en/movie_details_4.png) |
 
@@ -72,6 +72,7 @@ Movies App is a comprehensive, production-ready Flutter application designed to 
 | **State Management** | Flutter BLoC (Cubit & Bloc) |
 | **Backend** | Firebase (Auth & Firestore) |
 | **Networking** | Dio HTTP Client |
+| **Local Storage** | SharedPref |
 | **Localization** | Intl (English & Arabic) |
 | **Dependency Injection** | GetIt |
 

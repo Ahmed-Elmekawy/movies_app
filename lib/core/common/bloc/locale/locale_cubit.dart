@@ -23,4 +23,6 @@ class LocaleCubit extends Cubit<Locale> {
     await _cacheHelper.setData(key: CacheConstants.localeKey, value: languageCode);
     emit(Locale(languageCode));
   }
+
+  bool isEnglish() => state.languageCode == 'en';
 }

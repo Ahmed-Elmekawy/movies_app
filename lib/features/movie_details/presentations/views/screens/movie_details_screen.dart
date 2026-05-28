@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../core/di/injection_container.dart';
 import '../../../../../core/utils/ui_utils.dart';
 import '../../../../../core/widgets/error_view.dart';
@@ -24,6 +25,8 @@ class MovieDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final movieId = ModalRoute.of(context)!.settings.arguments as int;
+    final l10n = context.l10n;
+
     return BlocProvider(
       create: (context) => sl<MovieDetailsCubit>()..getMovieDetails(movieId),
       child: Scaffold(
@@ -43,7 +46,7 @@ class MovieDetailsScreen extends StatelessWidget {
                 listener: (context, profileState) {
                   if (profileState is AddToWatchListSuccess) {
                     context.read<AuthCubit>().checkAuthStatus();
-                    UIUtils.showToast('Added to watch list');
+                    UIUtils.showToast(l10n.addedToWatchList);
                   } else if (profileState is AddToWatchListFailure) {
                     UIUtils.showToast(profileState.message, isError: true);
                   } else if (profileState is AddToHistoryFailure) {
@@ -85,7 +88,7 @@ class MovieDetailsScreen extends StatelessWidget {
                               if (screenshots.isNotEmpty) ...[
                                 16.verticalSpace,
                                 _Section(
-                                  title: 'Screen Shots',
+                                  title: l10n.screenshots,
                                   child: MovieScreenshotsSection(
                                     screenshotPaths: screenshots,
                                   ),
@@ -94,7 +97,7 @@ class MovieDetailsScreen extends StatelessWidget {
                               if (state.similarMovies.isNotEmpty) ...[
                                 16.verticalSpace,
                                 _Section(
-                                  title: 'Similar',
+                                  title: l10n.similar,
                                   child: MovieSimilarSection(
                                     similarMovies: state.similarMovies,
                                   ),
@@ -103,7 +106,7 @@ class MovieDetailsScreen extends StatelessWidget {
                               if (movie.description.isNotEmpty) ...[
                                 16.verticalSpace,
                                 _Section(
-                                  title: 'Summary',
+                                  title: l10n.summary,
                                   child: MovieSummarySection(
                                     summary: movie.description,
                                   ),
@@ -112,7 +115,7 @@ class MovieDetailsScreen extends StatelessWidget {
                               if (movie.cast.isNotEmpty) ...[
                                 16.verticalSpace,
                                 _Section(
-                                  title: 'Cast',
+                                  title: l10n.cast,
                                   child: MovieCastSection(
                                     cast: movie.cast
                                         .map(
@@ -129,7 +132,7 @@ class MovieDetailsScreen extends StatelessWidget {
                               if (movie.genres.isNotEmpty) ...[
                                 16.verticalSpace,
                                 _Section(
-                                  title: 'Genres',
+                                  title: l10n.genres,
                                   child:
                                       MovieGenresSection(genres: movie.genres),
                                 ),

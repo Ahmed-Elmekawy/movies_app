@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../core/utils/app_routes.dart';
+import '../../../core/widgets/language_switcher.dart';
 import '../model/on_boarding_model.dart';
 import '../widgets/on_boarding_content.dart';
 import '../widgets/on_boarding_gradient_overlay.dart';
@@ -80,6 +82,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             isSecond: _isSecond,
             onNext: _handleNext,
             onBack: _handleBack,
+          ),
+          Positioned(
+            top: 50.h,
+            right: 20.w,
+            child: const LanguageSwitcher(),
           ),
         ],
       ),

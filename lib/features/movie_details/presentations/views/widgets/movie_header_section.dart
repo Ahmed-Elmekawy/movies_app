@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/utils/app_colors.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_network_image.dart';
 
@@ -122,7 +123,7 @@ class MovieHeaderSection extends StatelessWidget {
                       height: 52.h,
                       width: double.infinity,
                       borderRadius: 12.r,
-                      txtButton: 'Watch',
+                      txtButton: context.l10n.watch,
                     ),
                   ],
                 ),

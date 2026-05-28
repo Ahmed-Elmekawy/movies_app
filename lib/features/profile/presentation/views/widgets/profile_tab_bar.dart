@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 
 class ProfileTabBar extends StatelessWidget {
   final int selectedIndex;
@@ -17,13 +18,13 @@ class ProfileTabBar extends StatelessWidget {
       children: [
         _TabItem(
           icon: Icons.format_list_bulleted_rounded,
-          label: 'Watch List',
+          label: context.l10n.watchlist,
           isSelected: selectedIndex == 0,
           onTap: () => onTabChanged(0),
         ),
         _TabItem(
           icon: Icons.folder_rounded,
-          label: 'History',
+          label: context.l10n.history,
           isSelected: selectedIndex == 1,
           onTap: () => onTabChanged(1),
         ),

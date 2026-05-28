@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import '../../../../../core/utils/app_validators.dart';
 import '../../../../../core/widgets/custom_button.dart';
@@ -33,11 +34,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = context.l10n;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is UpdatePasswordSuccess) {
-          UIUtils.showToast('Password updated successfully. Please log in again.');
+          UIUtils.showToast(l10n.passwordUpdatedSuccess);
           Navigator.pop(context);
         } else if (state is AuthFailure) {
           UIUtils.showToast(state.message, isError: true);
@@ -50,7 +52,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            'Reset Password',
+            l10n.resetPassword,
             style: theme.textTheme.headlineSmall?.copyWith(
               color: colorScheme.primary,
               fontSize: 18.sp,
@@ -68,27 +70,39 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   40.verticalSpace,
                   CustomTextField(
                     controller: _oldPasswordController,
-                    hintText: 'Old Password',
+                    hintText: l10n.oldPassword,
                     isPassword: true,
-                    validator: AppValidators.validatePassword,
+                    validator: (value) => AppValidators.validatePassword(
+                      value,
+                      passwordRequired: l10n.passwordRequired,
+                      passwordTooShort: l10n.passwordTooShort,
+                      passwordInvalid: l10n.passwordInvalid,
+                    ),
                     prefixIcon: const Icon(Icons.lock_open),
                   ),
                   20.verticalSpace,
                   CustomTextField(
                     controller: _passwordController,
-                    hintText: 'New Password',
+                    hintText: l10n.newPassword,
                     isPassword: true,
-                    validator: AppValidators.validatePassword,
+                    validator: (value) => AppValidators.validatePassword(
+                      value,
+                      passwordRequired: l10n.passwordRequired,
+                      passwordTooShort: l10n.passwordTooShort,
+                      passwordInvalid: l10n.passwordInvalid,
+                    ),
                     prefixIcon: const Icon(Icons.lock_outline),
                   ),
                   20.verticalSpace,
                   CustomTextField(
                     controller: _confirmPasswordController,
-                    hintText: 'Confirm New Password',
+                    hintText: l10n.confirmNewPassword,
                     isPassword: true,
                     validator: (value) => AppValidators.validateConfirmPassword(
                       value,
                       _passwordController.text,
+                      confirmPasswordRequired: l10n.confirmPasswordRequired,
+                      passwordsDoNotMatch: l10n.passwordsDoNotMatch,
                     ),
                     prefixIcon: const Icon(Icons.lock_outline),
                   ),
@@ -96,7 +110,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   BlocBuilder<AuthCubit, AuthState>(
                     builder: (context, state) {
                       return CustomButton(
-                        txtButton: 'Update Password',
+                        txtButton: l10n.updatePassword,
                         onPressed: state is AuthLoading
                             ? null
                             : () {

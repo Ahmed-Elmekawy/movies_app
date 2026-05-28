@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/widgets/custom_button.dart';
 
@@ -15,7 +16,7 @@ class ProfileActionButtonsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme =  Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: REdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -24,7 +25,7 @@ class ProfileActionButtonsSection extends StatelessWidget {
           Expanded(
             child: CustomButton(
               height: 46.h,
-              txtButton: 'Edit Profile',
+              txtButton: context.l10n.editProfile,
               onPressed: onEditProfile,
               backgroundColor: colorScheme.primary,
               foregroundColor: colorScheme.onPrimary,
@@ -35,7 +36,7 @@ class ProfileActionButtonsSection extends StatelessWidget {
           Expanded(
             child: CustomButton(
               height: 46.h,
-              txtButton: 'Exit',
+              txtButton: context.l10n.logout,
               icon: Icons.logout,
               onPressed: onExit,
               backgroundColor: colorScheme.error,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../model/on_boarding_model.dart';
 
@@ -21,9 +22,39 @@ class OnBoardingContent extends StatelessWidget {
     required this.onBack,
   });
 
+  String _getTitle(BuildContext context) {
+    final l10n = context.l10n;
+    final index = OnBoardingModel.onBoardingList.indexOf(model);
+    switch (index) {
+      case 0: return l10n.onboardingTitle1;
+      case 1: return l10n.onboardingTitle2;
+      case 2: return l10n.onboardingTitle3;
+      case 3: return l10n.onboardingTitle4;
+      case 4: return l10n.onboardingTitle5;
+      case 5: return l10n.onboardingTitle6;
+      default: return model.title;
+    }
+  }
+
+  String? _getDescription(BuildContext context) {
+    final l10n = context.l10n;
+    final index = OnBoardingModel.onBoardingList.indexOf(model);
+    switch (index) {
+      case 0: return l10n.onboardingDesc1;
+      case 1: return l10n.onboardingDesc2;
+      case 2: return l10n.onboardingDesc3;
+      case 3: return l10n.onboardingDesc4;
+      case 4: return l10n.onboardingDesc5;
+      default: return model.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final title = _getTitle(context);
+    final description = _getDescription(context);
+
     return Positioned(
       bottom: 0,
       left: 0,
@@ -40,10 +71,10 @@ class OnBoardingContent extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _Title(title: model.title),
-            if (model.description != null && model.description!.isNotEmpty) ...[
+            _Title(title: title),
+            if (description != null && description.isNotEmpty) ...[
               SizedBox(height: 16.h),
-              _Description(description: model.description!),
+              _Description(description: description),
             ],
             SizedBox(height: 32.h),
             _ActionButtons(
@@ -112,10 +143,10 @@ class _ActionButtons extends StatelessWidget {
     required this.onBack,
   });
 
-  String get _nextButtonText {
-    if (isFirst) return "Explore Now";
-    if (isLast) return "Finish";
-    return "Next";
+  String _nextButtonText(BuildContext context) {
+    if (isFirst) return context.l10n.exploreNow;
+    if (isLast) return context.l10n.finish;
+    return context.l10n.next;
   }
 
   @override
@@ -124,7 +155,7 @@ class _ActionButtons extends StatelessWidget {
     return Column(
       children: [
         CustomButton(
-          txtButton: _nextButtonText,
+          txtButton: _nextButtonText(context),
           backgroundColor: theme.colorScheme.primary,
           foregroundColor: theme.colorScheme.onPrimary,
           onPressed: onNext,
@@ -159,7 +190,7 @@ class _BackButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         child: Text(
-          "Back",
+          context.l10n.back,
           style: theme.textTheme.headlineSmall?.copyWith(
             color: theme.colorScheme.primary,
             fontSize: 18.sp,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'custom_button.dart';
 
 class AppErrorView extends StatelessWidget {
@@ -27,7 +28,7 @@ class AppErrorView extends StatelessWidget {
             ),
             24.verticalSpace,
             Text(
-              message ?? "Oops! Something went wrong",
+              message ?? context.l10n.somethingWentWrong,
               textAlign: TextAlign.center,
             ),
             if (onRetry != null) ...[
@@ -35,7 +36,7 @@ class AppErrorView extends StatelessWidget {
               SizedBox(
                 width: 160.w,
                 child: CustomButton(
-                  txtButton: "Retry",
+                  txtButton: context.l10n.retry,
                   onPressed: onRetry!,
                 ),
               ),

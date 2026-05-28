@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../../core/utils/app_assets.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_validators.dart';
@@ -32,6 +33,7 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Form(
       key: formKey,
       child: Column(
@@ -39,49 +41,67 @@ class RegisterForm extends StatelessWidget {
         children: [
           CustomTextField(
             controller: nameController,
-            hintText: 'Name',
-            validator: AppValidators.validateName,
+            hintText: l10n.name,
+            validator: (value) => AppValidators.validateName(
+              value,
+              nameRequired: l10n.nameRequired,
+            ),
             prefixIcon: _buildPrefixIcon(AppSVGs.nameIcon),
           ),
           16.verticalSpace,
           CustomTextField(
             controller: emailController,
-            hintText: 'Email',
-            validator: AppValidators.validateEmail,
+            hintText: l10n.email,
+            validator: (value) => AppValidators.validateEmail(
+              value,
+              emailRequired: l10n.emailRequired,
+              invalidEmail: l10n.invalidEmail,
+            ),
             prefixIcon: _buildPrefixIcon(AppSVGs.emailIcon),
           ),
           16.verticalSpace,
           CustomTextField(
             controller: passwordController,
-            hintText: 'Password',
+            hintText: l10n.password,
             isPassword: true,
-            validator: AppValidators.validatePassword,
+            validator: (value) => AppValidators.validatePassword(
+              value,
+              passwordRequired: l10n.passwordRequired,
+              passwordTooShort: l10n.passwordTooShort,
+              passwordInvalid: l10n.passwordInvalid,
+            ),
             prefixIcon: _buildPrefixIcon(AppSVGs.passwordIcon),
           ),
           16.verticalSpace,
           CustomTextField(
             controller: confirmPasswordController,
-            hintText: 'Confirm Password',
+            hintText: l10n.confirmPassword,
             isPassword: true,
             validator: (value) => AppValidators.validateConfirmPassword(
               value,
               passwordController.text,
+              confirmPasswordRequired: l10n.confirmPasswordRequired,
+              passwordsDoNotMatch: l10n.passwordsDoNotMatch,
             ),
             prefixIcon: _buildPrefixIcon(AppSVGs.passwordIcon),
           ),
           16.verticalSpace,
           CustomTextField(
             controller: phoneController,
-            hintText: 'Phone Number',
+            hintText: l10n.phoneNumber,
             keyboardType: TextInputType.phone,
-            validator: AppValidators.validatePhone,
+            validator: (value) => AppValidators.validatePhone(
+              value,
+              phoneRequired: l10n.phoneRequired,
+              invalidPhone: l10n.invalidPhone,
+            ),
             prefixIcon: _buildPrefixIcon(AppSVGs.phoneIcon),
           ),
           24.verticalSpace,
           isLoading
               ? Center(child: CircularProgressIndicator(color: theme.colorScheme.primary))
               : CustomButton(
-                  txtButton: 'Create Account',
+                  txtButton: l10n.createAccount,
                   onPressed: onRegisterPressed,
                   backgroundColor: theme.colorScheme.primary,
                   foregroundColor: theme.colorScheme.onPrimary,

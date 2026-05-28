@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../core/utils/app_validators.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 
@@ -20,6 +21,7 @@ class EditProfileFormSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Form(
       key: formKey,
       child: Column(
@@ -27,17 +29,24 @@ class EditProfileFormSection extends StatelessWidget {
           40.verticalSpace,
           CustomTextField(
             controller: nameController,
-            hintText: 'Full Name',
+            hintText: l10n.fullName,
             prefixIcon: const Icon(Icons.person),
-            validator: AppValidators.validateName,
+            validator: (value) => AppValidators.validateName(
+              value,
+              nameRequired: l10n.nameRequired,
+            ),
           ),
           16.verticalSpace,
           CustomTextField(
             controller: phoneController,
-            hintText: 'Phone Number',
+            hintText: l10n.phoneNumber,
             prefixIcon: const Icon(Icons.phone),
             keyboardType: TextInputType.phone,
-            validator: AppValidators.validatePhone,
+            validator: (value) => AppValidators.validatePhone(
+              value,
+              phoneRequired: l10n.phoneRequired,
+              invalidPhone: l10n.invalidPhone,
+            ),
           ),
           16.verticalSpace,
           Align(
@@ -50,7 +59,7 @@ class EditProfileFormSection extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
-                'Reset Password',
+                l10n.resetPassword,
                 style: TextStyle(
                   color: theme.colorScheme.primary,
                   fontSize: 14.sp,

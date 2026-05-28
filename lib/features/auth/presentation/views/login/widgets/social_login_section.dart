@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../../core/utils/app_assets.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 
@@ -11,6 +12,7 @@ class SocialLoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Column(
       children: [
         Row(
@@ -19,7 +21,7 @@ class SocialLoginSection extends StatelessWidget {
               child: Divider(color: theme.colorScheme.primary, endIndent: 10),
             ),
             Text(
-              'OR',
+              l10n.or,
               style: TextStyle(
                 color: theme.colorScheme.primary,
                 fontSize: 14.sp,
@@ -32,7 +34,7 @@ class SocialLoginSection extends StatelessWidget {
         ),
         20.verticalSpace,
         CustomButton(
-          txtButton: 'Login With Google',
+          txtButton: l10n.loginWithGoogle,
           onPressed: onGoogleLoginPressed,
           backgroundColor: theme.colorScheme.primary,
           foregroundColor: theme.colorScheme.onPrimary,

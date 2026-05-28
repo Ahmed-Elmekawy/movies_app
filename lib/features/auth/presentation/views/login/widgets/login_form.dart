@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../../core/utils/app_assets.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_validators.dart';
@@ -28,6 +29,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Form(
       key: formKey,
       child: Column(
@@ -35,8 +37,12 @@ class LoginForm extends StatelessWidget {
         children: [
           CustomTextField(
             controller: emailController,
-            hintText: 'Email',
-            validator: AppValidators.validateEmail,
+            hintText: l10n.email,
+            validator: (value) => AppValidators.validateEmail(
+              value,
+              emailRequired: l10n.emailRequired,
+              invalidEmail: l10n.invalidEmail,
+            ),
             prefixIcon: Padding(
               padding: EdgeInsets.all(14.r),
               child: SvgPicture.asset(
@@ -48,9 +54,14 @@ class LoginForm extends StatelessWidget {
           20.verticalSpace,
           CustomTextField(
             controller: passwordController,
-            hintText: 'Password',
+            hintText: l10n.password,
             isPassword: true,
-            validator: AppValidators.validatePassword,
+            validator: (value) => AppValidators.validatePassword(
+              value,
+              passwordRequired: l10n.passwordRequired,
+              passwordTooShort: l10n.passwordTooShort,
+              passwordInvalid: l10n.passwordInvalid,
+            ),
             prefixIcon: Padding(
               padding: EdgeInsets.all(14.r),
               child: SvgPicture.asset(
@@ -68,7 +79,7 @@ class LoginForm extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
-                'Forget Password ?',
+                l10n.forgotPassword,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w400,
@@ -80,7 +91,7 @@ class LoginForm extends StatelessWidget {
           isLoading
               ? Center(child: CircularProgressIndicator(color: theme.colorScheme.primary))
               : CustomButton(
-                  txtButton: 'Login',
+                  txtButton: l10n.login,
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       onLoginPressed();

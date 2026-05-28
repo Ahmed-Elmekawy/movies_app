@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movies_app/core/utils/app_assets.dart';
 import 'package:movies_app/core/utils/app_colors.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import 'package:movies_app/core/utils/app_validators.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/widgets/custom_button.dart';
@@ -32,14 +33,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
           UIUtils.showLoadingDialog(context);
         } else if (state is AuthInitial) {
            UIUtils.hideLoadingDialog(context);
-           // AuthInitial is emitted after successful forgot password in the current AuthCubit
-           UIUtils.showToast("Reset link sent to your email");
+           UIUtils.showToast(l10n.resetLinkSent);
            Navigator.pop(context);
         } else if (state is AuthFailure) {
           UIUtils.hideLoadingDialog(context);
@@ -53,7 +54,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            'Forget Password',
+            l10n.forgotPassword,
             style: TextStyle(
               color: theme.colorScheme.primary,
               fontSize: 16.sp,
@@ -77,8 +78,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   24.verticalSpace,
                   CustomTextField(
                     controller: _emailController,
-                    hintText: 'Email',
-                    validator: AppValidators.validateEmail,
+                    hintText: l10n.email,
+                    validator: (value) => AppValidators.validateEmail(
+                      value,
+                      emailRequired: l10n.emailRequired,
+                      invalidEmail: l10n.invalidEmail,
+                    ),
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(14.r),
                       child: SvgPicture.asset(
@@ -92,7 +97,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   24.verticalSpace,
                   CustomButton(
-                    txtButton: 'Verify Email',
+                    txtButton: l10n.verifyEmail,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthCubit>().forgotPassword(_emailController.text.trim());

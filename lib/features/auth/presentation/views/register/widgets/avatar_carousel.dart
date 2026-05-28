@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/app_constants.dart';
+import 'package:movies_app/core/utils/app_localizations_extension.dart';
 import '../../../../../../core/utils/app_colors.dart';
 
 class AvatarCarousel extends StatelessWidget {
@@ -44,7 +45,7 @@ class AvatarCarousel extends StatelessWidget {
         8.verticalSpace,
         Center(
           child: Text(
-            'Avatar',
+            context.l10n.avatar,
             style: TextStyle(
               color: AppColors.white,
               fontSize: 16.sp,
